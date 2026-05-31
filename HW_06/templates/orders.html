@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8">
+    <title> ☕ Coffee &amp; 🍰 Cheesecake</title>
+  </head>
+  <body>
+    <nav>
+      <a href="/" class="button">Home</a>
+      <a href="/menu" class="button">Menu</a>
+      <a href="/about" class="button">About</a>
+    </nav>
+
+
+        <h1>Orders</h1>
+
+        {% for order in orders %}
+            <p>
+                {{ order.item }} x{{ order.quantity }}
+                = {{ order.total }} UAH
+            </p>
+                <form action="/delete" method="POST">
+                  <input type="hidden" name="item" value="{{ order.item }}">
+                  <button type="submit">Delete</button>
+                </form>
+
+        {% endfor %}
+
+        <hr>
+
+        <h2>Total: {{ total_sum }} UAH</h2>
+  </body>
+</html>
+
+

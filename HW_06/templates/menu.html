@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8" >
+    <title>☕ Coffee &amp; 🍰 Cheesecake</title>
+  </head>
+  <body>
+    <nav>
+      <a href="/" class="button">Home</a>
+      <a href="/orders" class="button">Order</a>
+      <a href="/about" class="button">About</a>
+    </nav>
+
+    {% for item in menu %}
+
+    <div class="menu-item">
+      <p>{{ item.name }} - {{ item.price }} UAH</p>
+
+      <form action="/menu" method="POST">
+        <input type="hidden" name="item" value="{{ item.name }}" >
+        <input type="number" name="quantity" value="1" min="1" >
+
+        <button type="submit">Add</button>
+      </form>
+    </div>
+
+    {% endfor %}
+  </body>
+</html>
