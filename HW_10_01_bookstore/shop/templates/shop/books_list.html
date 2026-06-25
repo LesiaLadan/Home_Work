@@ -1,0 +1,17 @@
+<h1>Books</h1>
+
+<form method="GET">
+    <input type="text" name="q" placeholder="Search books...">
+    <button type="submit">Search</button>
+</form>
+
+<hr>
+
+{% for book in books %}
+<p>
+  <a href="{% url 'book_detail' book.id %}"> {{ book.title }} </a>
+</p>
+
+{% endfor %}
+
+<a href="{% url 'main_page' %}">Back</a>

@@ -1,0 +1,9 @@
+<h1>Orders</h1>
+
+{% for order in orders %}
+    <p>Order #{{ order.id }} — {{ order.total_price }} UAH</p>
+{% empty %}
+    <p>No orders</p>
+{% endfor %}
+
+<a href="{% url 'main_page' %}">Back</a>

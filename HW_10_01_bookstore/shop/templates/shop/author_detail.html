@@ -1,0 +1,11 @@
+<h1>{{ author.first_name }} {{ author.last_name }}</h1>
+
+<p>{{ author.biography }}</p>
+
+<h2>Books</h2>
+
+{% for book in author.books.all %}
+<a href="{% url 'book_detail' author.id %}"> <p>{{ book.title }}</p>
+{% endfor %}
+
+<a href="{% url 'authors_list' %}">Back</a>
