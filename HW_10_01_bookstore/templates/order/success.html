@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<h2>Menu</h2>
+
+    <a href="{% url 'main_page' %}">Home</a> |
+    <a href="{% url 'order_list' %}">Orders</a> |
+    <a href="{% url 'books_list' %}">Books<a/> |
+    <a href="{%url 'authors_list' %}">Authors<a/>|
+    <a href="{% url 'new_order' %}">New Order</a>
+<head>
+    <meta charset="UTF-8">
+    <title>Success</title>
+</head>
+<body>
+
+    <h1>✅ Order successfully created</h1>
+
+    <a href="/orders/">⬅ Back to orders</a>
+
+</body>
+</html>
+
+

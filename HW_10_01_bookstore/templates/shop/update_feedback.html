@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}
+Edit Feedback | BookStore
+{% endblock %}
+
+{% block content %}
+
+<h2>Edit Feedback</h2>
+
+<div class="card mt-3">
+    <div class="card-body">
+
+        <h5>{{ object.book.title }}</h5>
+
+        <form method="post">
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <button type="submit" class="btn btn-dark">
+                Save Changes
+            </button>
+
+            <a href="{% url 'shop:book_detail' object.book.pk %}"
+               class="btn btn-secondary">
+                Cancel
+            </a>
+
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}

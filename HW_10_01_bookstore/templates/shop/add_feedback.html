@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Add Review | BookStore{% endblock %}
+
+{% block content %}
+
+<h2>Add Feedback</h2>
+
+<div class="card mt-3">
+    <div class="card-body">
+
+        <form method="post">
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <button type="submit" class="btn btn-dark">
+                Submit Feedback
+            </button>
+
+            <a href="{% url 'shop:book_detail' view.kwargs.pk %}"
+               class="btn btn-secondary">
+                Cancel
+            </a>
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}

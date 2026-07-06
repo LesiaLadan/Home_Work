@@ -9,6 +9,7 @@ class NewOrderForm(forms.ModelForm):
             "owner",
             "status",
             "total_price",
+            "delivery_address",
             "payment_method",
             "payment_status",
             "ttn",

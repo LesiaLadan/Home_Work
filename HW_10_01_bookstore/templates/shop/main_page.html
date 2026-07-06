@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<h2>Top Books</h2>
+<ul class="list-group mb-4">
+    {% for book in top_books %}
+        <li class="list-group-item d-flex justify-content-between">
+            <a href="{% url 'shop:book_detail' book.pk %}"
+               class="title text-dark text-decoration-none">
+                {{ book.title }}
+            </a>
+
+            <span class="meta">
+                {{ book.avg_rating }}
+            </span>
+        </li>
+    {% empty %}
+        <li class="list-group-item">
+            No books
+        </li>
+    {% endfor %}
+</ul>
+
+<h2>New Books</h2>
+<ul class="list-group mb-4">
+    {% for book in new_books %}
+        <li class="list-group-item d-flex justify-content-between">
+
+            <a href="{% url 'shop:book_detail' book.pk %}"
+               class="title text-dark text-decoration-none">
+                {{ book.title }}
+            </a>
+
+            <span class="meta">
+                {{ book.publication_date|date:"d.m.Y" }}
+            </span>
+
+        </li>
+    {% empty %}
+        <li class="list-group-item">
+            No books
+        </li>
+    {% endfor %}
+</ul>
+
+<h2>Popular Books</h2>
+<ul class="list-group mb-4">
+    {% for book in popular_books %}
+        <li class="list-group-item d-flex justify-content-between">
+            <a href="{% url 'shop:book_detail' book.pk %}"
+               class="title text-dark text-decoration-none">
+                {{ book.title }}
+            </a>
+
+            <span class="meta">
+                {% if book.ratings_count %}
+                    {{ book.ratings_count }} feedback{{ book.ratings_count|pluralize }}
+                {% else %}
+                    No feedback yet
+                {% endif %}
+            </span>
+        </li>
+    {% empty %}
+        <li class="list-group-item">
+            No books
+        </li>
+    {% endfor %}
+</ul>
+
+<h2>Top Authors</h2>
+<ul class="list-group">
+    {% for author in top_authors %}
+        <li class="list-group-item d-flex justify-content-between">
+            <a href="{% url 'shop:author_detail' author.pk %}"
+               class="title text-dark text-decoration-none">
+                {{ author.first_name }} {{ author.last_name }}
+            </a>
+
+            <span class="meta">
+                {{ author.books_count }}
+            </span>
+        </li>
+    {% empty %}
+        <li class="list-group-item">
+            No authors
+        </li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

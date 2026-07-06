@@ -16,12 +16,12 @@ def new_order(request):
             order.order_date = datetime.now()
             order.save()
 
-            return render(request, "order/success.html", {"order": order})
+            return redirect("order:order_success")
 
     else:
         order_form = NewOrderForm()
 
-    return redirect("order_success")
+    return render(request, "order/new_order.html", {"order_form": order_form})
 
 
 def order_success(request):
@@ -36,6 +36,6 @@ def order_list(request):
 def order_detail(request, order_id):
     order = Order.objects.get(id=order_id)
 
-    return render(request, "order/detail.html", {
+    return render(request, "order/order_detail.html", {
         "order": order
     })

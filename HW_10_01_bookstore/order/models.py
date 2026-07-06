@@ -2,6 +2,8 @@ import enum
 
 from django.db import models
 
+from book_store import settings
+
 
 class OrderDetails(models.Model):
     order = models.ForeignKey(
@@ -30,7 +32,12 @@ class OrderStatus(enum.Enum):
 
 
 class Order(models.Model):
-    owner = models.ForeignKey("auth.User", on_delete=models.CASCADE)
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="orders",
+    )
+
     delivery_address = models.ForeignKey(
         "user_management.DeliveryAddress", on_delete=models.CASCADE
     )

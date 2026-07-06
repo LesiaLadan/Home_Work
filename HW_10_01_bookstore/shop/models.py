@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
 
 
 class Publisher(models.Model):
@@ -11,10 +11,7 @@ class Publisher(models.Model):
         return self.name
 
     def __repr__(self):
-        return (
-            f"Publisher: {self.name}, City: {self.city}, "
-            f"Website: {self.website}"
-        )
+        return f"Publisher: {self.name}, City: {self.city}, " f"Website: {self.website}"
 
 
 class Author(models.Model):
@@ -43,22 +40,32 @@ class Book(models.Model):
     in_stock = models.PositiveIntegerField()
     price = models.DecimalField(max_digits=6, decimal_places=2)
     language = models.CharField(max_length=50)
-    category = models.ManyToManyField(Category)
+    category = models.ManyToManyField(Category, related_name="books")
     calculated_avg_rating = models.DecimalField(max_digits=3, decimal_places=2)
     description = models.TextField(blank=True)
 
     def __str__(self):
-        return f"{self.title} by {', '.join([str(author) for author in self.author.all()])}"
+        authors = ", ".join(str(author) for author in self.author.all())
+        return f"{self.title} by {authors}"
 
     def __repr__(self):
-        return f"{self.title} by {', '.join([str(author) for author in self.author.all()])}"
+        authors = ", ".join(str(author) for author in self.author.all())
+        return f"{self.title} by {authors}"
 
 
 class Rating(models.Model):
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    book = models.ForeignKey(
+        Book,
+        on_delete=models.CASCADE,
+        related_name="ratings",
+    )
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="ratings",
+    )
     rating = models.PositiveIntegerField()
     feedback = models.TextField(blank=True)
 
     def __str__(self):
-        return f"{self.book.title}"
+        return f"{self.book.title} - {self.user.username}"

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}
+Delete Feedback | BookStore
+{% endblock %}
+
+{% block content %}
+
+<h2>Delete Feedback</h2>
+
+<div class="card mt-3">
+    <div class="card-body">
+
+        <p>
+            Are you sure you want to delete your feedback for
+            <strong>{{ object.book.title }}</strong>?
+        </p>
+
+        {% if object.feedback %}
+            <blockquote class="blockquote">
+                {{ object.feedback }}
+            </blockquote>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+
+            <button type="submit" class="btn btn-danger">
+                Delete
+            </button>
+
+            <a href="{% url 'shop:book_detail' object.book.pk %}"
+               class="btn btn-secondary">
+                Cancel
+            </a>
+
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}

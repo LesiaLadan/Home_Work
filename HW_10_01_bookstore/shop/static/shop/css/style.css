@@ -1,0 +1,62 @@
+body {
+  background: #b1b5a0;
+  color: #1c1c1c;
+}
+
+.custom-navbar {
+  background: #313b27d4;
+  border-bottom: 2px solid #3a4a3a;
+}
+
+.navbar a {
+  color: #b8bbb4;
+  text-decoration: none;
+  margin-right: 12px;
+  font-size: 22px;
+}
+.custom-navbar .nav-link,
+.custom-navbar .navbar-brand {
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 400;
+    color: white;
+}
+
+.navbar a:hover {
+  color: #3f4f24;
+}
+
+.title {
+  font-weight: 600;
+  color: #3b4a28;
+}
+
+.meta {
+  color: #5f6b5f;
+  font-size: 13px;
+}
+
+.list-group-item {
+  background: #fff;
+  border-color: #e6eadf;
+}
+
+h2 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  color: #1f2421;
+}
+
+.empty {
+  color: #495146;
+  font-style: italic;
+}
+
+.book-details p {
+  margin: 8px 0;
+  color: #2b2f2b;
+}
+
+.book-details strong {
+  color: #1f2421;
+}
