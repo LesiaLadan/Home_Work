@@ -39,10 +39,21 @@ class Book(models.Model):
     added_date = models.DateTimeField(auto_now_add=True)
     in_stock = models.PositiveIntegerField()
     price = models.DecimalField(max_digits=6, decimal_places=2)
+    wholesale_price = models.DecimalField(
+        max_digits=8,
+        decimal_places=2,
+        null=True,
+        blank=True,
+    )
     language = models.CharField(max_length=50)
     category = models.ManyToManyField(Category, related_name="books")
     calculated_avg_rating = models.DecimalField(max_digits=3, decimal_places=2)
     description = models.TextField(blank=True)
+
+    class Meta:
+        permissions = [
+            ("view_wholesale_price", "Can view wholesale price"),
+        ]
 
     def __str__(self):
         authors = ", ".join(str(author) for author in self.author.all())

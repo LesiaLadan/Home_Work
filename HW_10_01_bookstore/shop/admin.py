@@ -27,6 +27,7 @@ class BookAdmin(admin.ModelAdmin):
         "get_authors",
         "isbn",
         "price",
+        "wholesale_price",
         "in_stock",
         "publication_date",
         "publisher",

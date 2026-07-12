@@ -44,16 +44,48 @@
                         {% endfor %}
                     </div>
                 </div>
+                <div class="col-md-2 text-md-end">
 
-                <div class="col-md-2 text-md-end mt-2 mt-md-0">
-                    <strong>{{ book.price }} UAH</strong>
+                    {% if perms.shop.view_wholesale_price %}
+
+                        <div>
+                            <strong>Retail:</strong>
+                            {{ book.price }} UAH
+                        </div>
+
+                        <div class="small text-muted">
+                            <strong>Wholesale:</strong>
+                            {{ book.wholesale_price }} UAH
+                        </div>
+
+                    {% else %}
+
+                        <div>
+                            <strong>Price:</strong>
+                            {{ book.price }} UAH
+                        </div>
+
+                    {% endif %}
+
                 </div>
 
                 <div class="col-md-3 text-md-end mt-2 mt-md-0">
-                    <a href="{% url 'order:new_order' %}"
-                       class="btn btn-dark btn-sm">
-                        Add to Order
-                    </a>
+
+                    {% if user.is_authenticated %}
+
+                        <a href="{% url 'order:new_order' %}"
+                        class="btn btn-dark btn-sm">
+                            Add to Order
+                        </a>
+
+                    {% else %}
+
+                        <span class="text-muted small">
+                            Login to order
+                        </span>
+
+                    {% endif %}
+
                 </div>
 
             </div>

@@ -14,6 +14,11 @@ from shop.models import Author, Book, Category, Rating
 from shop.forms import RatingForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from user_management.models import LastViewedBooks
+import structlog
+
+logger = structlog.get_logger(__name__)
+
 
 class MainPageView(TemplateView):
     template_name = "shop/main_page.html"
@@ -35,6 +40,13 @@ class MainPageView(TemplateView):
             books_count=Count("books")
         ).order_by("-books_count")[:5]
 
+        if self.request.user.is_authenticated:
+            context["last_viewed"] = (
+                LastViewedBooks.objects.filter(owner=self.request.user)
+                .select_related("book")
+                .order_by("-viewed_at")[:5]
+            )
+        logger.info("Main page loaded")
         return context
 
 
@@ -72,14 +84,21 @@ class BooksListView(ListView):
     paginate_by = 5
 
     def get_queryset(self):
-        queryset = super().get_queryset()
+        queryset = super().get_queryset().prefetch_related("author")
+
         book_query = self.request.GET.get("q", "")
+
         if book_query:
             queryset = queryset.filter(
                 Q(title__icontains=book_query)
                 | Q(author__first_name__icontains=book_query)
                 | Q(author__last_name__icontains=book_query)
             ).distinct()
+            logger.info(
+                "Books search",
+                query=book_query,
+                results=queryset.count(),
+            )
         return queryset
 
 
@@ -111,6 +130,16 @@ class BookDetailView(DetailView):
     model = Book
     template_name = "shop/book_detail.html"
     context_object_name = "book"
+
+    def get_object(self, queryset=None):
+        book = super().get_object(queryset)
+        logger.info(
+            "Book detail opened",
+            book_id=book.id,
+            title=book.title,
+        )
+
+        return book
 
 
 # def authors_list(request):
@@ -144,6 +173,11 @@ class AuthorsListView(ListView):
                 Q(first_name__icontains=author_query)
                 | Q(last_name__icontains=author_query)
             )
+            logger.info(
+                "Found authors matching query",
+                author_count=queryset.count(),
+                query=author_query,
+            )
         return queryset
 
 
@@ -154,6 +188,15 @@ class AuthorDetailView(DetailView):
     model = Author
     template_name = "shop/author_detail.html"
     context_object_name = "author"
+
+    def get_object(self, queryset=None):
+        author = super().get_object(queryset)
+        logger.info(
+            "Author detail opened",
+            author_id=author.id,
+            author=str(author),
+        )
+        return author
 
 
 # def categories_list(request):
@@ -182,6 +225,11 @@ class CategoriesListView(ListView):
         category_query = self.request.GET.get("q", "")
         if category_query:
             queryset = queryset.filter(name__icontains=category_query)
+            logger.info(
+                "Found categories matching query",
+                category_count=queryset.count(),
+                query=category_query,
+            )
         return queryset
 
 
@@ -192,9 +240,16 @@ class CategoryBooksListView(ListView):
     paginate_by = 3
 
     def get_queryset(self):
-        return Book.objects.filter(category__pk=self.kwargs["pk"]).distinct()
+        queryset = Book.objects.filter(category__pk=self.kwargs["pk"]).distinct()
+        logger.info(
+            "Loading books for category",
+            category_id=self.kwargs["pk"],
+            books_count=queryset.count(),
+        )
+        return queryset
 
     def get_context_data(self, **kwargs):
+        logger.info("Loading context data for category", category_id=self.kwargs["pk"])
         context = super().get_context_data(**kwargs)
         context["category"] = Category.objects.get(pk=self.kwargs["pk"])
         return context
@@ -238,6 +293,11 @@ class AddFeedbackView(LoginRequiredMixin, CreateView):
             Avg("rating")
         )["rating__avg"]
         book.save()
+        logger.info(
+            "Feedback created",
+            book_id=book.id,
+            username=self.request.user.username,
+        )
 
         return response
 
@@ -263,6 +323,12 @@ class UpdateFeedbackView(LoginRequiredMixin, UpdateView):
         ]
         book.calculated_avg_rating = avg_rating
         book.save()
+        logger.info(
+            "Feedback updated",
+            book_id=book.id,
+            user=self.request.user.username,
+            average_rating=avg_rating,
+        )
 
         return response
 
@@ -291,7 +357,11 @@ class DeleteFeedbackView(LoginRequiredMixin, DeleteView):
 
         book.calculated_avg_rating = avg or 0
         book.save()
-
+        logger.info(
+            "Feedback deleted",
+            book_id=book.id,
+            user=self.request.user.username,
+        )
         return response
 
     def get_success_url(self):

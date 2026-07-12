@@ -90,4 +90,32 @@
     {% endfor %}
 </ul>
 
+
+{% if user.is_authenticated %}
+
+<h2 class="mt-5">Recently Viewed</h2>
+
+<ul class="list-group mb-4">
+
+    {% for item in last_viewed %}
+
+        <li class="list-group-item">
+            <a href="{% url 'shop:book_detail' item.book.pk %}"
+               class="text-dark text-decoration-none">
+                {{ item.book.title }}
+            </a>
+        </li>
+
+    {% empty %}
+
+        <li class="list-group-item text-muted">
+            You haven't viewed any books yet.
+        </li>
+
+    {% endfor %}
+
+</ul>
+
+{% endif %}
+
 {% endblock %}

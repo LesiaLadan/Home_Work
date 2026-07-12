@@ -1,5 +1,8 @@
 from django.contrib import admin
-import user_management.models as user_management_models
+from django.contrib.auth.admin import UserAdmin
 
-admin.site.register(user_management_models.DeliveryAddress)
-admin.site.register(user_management_models.LastViewedBooks)
+from .models import User, DeliveryAddress, LastViewedBooks
+
+admin.site.register(DeliveryAddress)
+admin.site.register(LastViewedBooks)
+admin.site.register(User, UserAdmin)

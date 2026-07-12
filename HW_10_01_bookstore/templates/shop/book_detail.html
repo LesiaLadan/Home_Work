@@ -15,10 +15,22 @@
             <strong>ISBN:</strong> {{ book.isbn }}
         </p>
 
-        <p>
-            <strong>Price:</strong> {{ book.price }} UAH
-        </p>
+        {% if perms.shop.view_wholesale_price %}
+            <p>
+                <strong>Retail Price:</strong>
+                {{ book.price }} UAH
+            </p>
 
+            <p>
+                <strong>Wholesale Price:</strong>
+                {{ book.wholesale_price }} UAH
+            </p>
+        {% else %}
+            <p>
+                <strong>Price:</strong>
+                {{ book.price }} UAH
+            </p>
+        {% endif %}
         <p>
             <strong>Average Rating:</strong>
             {{ book.calculated_avg_rating }}
