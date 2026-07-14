@@ -11,6 +11,7 @@ def user_registration(request):
         register_form = UserRegisterForm(request.POST)
         if register_form.is_valid():
             register_form.save()
+            user = register_form.instance
             logger.info(
                 "New user registered",
                 username=user.username,
