@@ -27,7 +27,7 @@ class DeliveryAddress(models.Model):
 class LastViewedBooks(models.Model):
     book = models.ForeignKey("shop.Book", on_delete=models.CASCADE)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    viewed_at = models.DateTimeField(auto_now_add=True)
+    viewed_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ["-viewed_at"]

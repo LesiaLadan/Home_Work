@@ -26,9 +26,13 @@ class MainPageView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context["top_books"] = Book.objects.annotate(
-            avg_rating=Avg("ratings__rating")
-        ).order_by("-avg_rating")[:5]
+        context["top_books"] = (
+            Book.objects.annotate(
+                avg_rating=Avg("ratings__rating"), ratings_count=Count("ratings")
+            )
+            .filter(ratings_count__gt=0)
+            .order_by("-avg_rating")[:5]
+        )
 
         context["new_books"] = Book.objects.order_by("-publication_date")[:5]
 
@@ -47,6 +51,7 @@ class MainPageView(TemplateView):
                 .order_by("-viewed_at")[:5]
             )
         logger.info("Main page loaded")
+
         return context
 
 
