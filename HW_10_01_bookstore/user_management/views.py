@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import UserRegisterForm, UserLoginForm
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 import structlog
 
 logger = structlog.get_logger(__name__)
@@ -53,6 +54,7 @@ def user_login(request):
     )
 
 
+@login_required
 def user_logout(request):
     username = request.user.username
     logout(request)

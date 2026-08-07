@@ -1,27 +1,54 @@
 from django import forms
-from order.models import Order, OrderDetails
+from order.models import PaymentMethod
+from user_management.models import DeliveryAddress
 
 
-class NewOrderForm(forms.ModelForm):
+class DeliveryAddressForm(forms.ModelForm):
+    payment_method = forms.ChoiceField(
+        label="Payment Method",
+        choices=[(item.value, item.name.title()) for item in PaymentMethod],
+        widget=forms.RadioSelect,
+    )
+
     class Meta:
-        model = Order
+        model = DeliveryAddress
         fields = (
-            "owner",
-            "status",
-            "total_price",
-            "delivery_address",
-            "payment_method",
-            "payment_status",
-            "ttn",
+            "postal_code",
+            "city",
+            "street",
+            "branch",
         )
 
+        labels = {
+            "postal_code": "Postal Code",
+            "city": "City",
+            "street": "Street",
+            "branch": "Nova Poshta Branch",
+        }
 
-class NewOrderDetailsForm(forms.ModelForm):
-    class Meta:
-        model = OrderDetails
-        fields = (
-            "order",
-            "book",
-            "quantity",
-            "price",
-        )
+        widgets = {
+            "postal_code": forms.TextInput(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "Postal code",
+                }
+            ),
+            "city": forms.TextInput(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "City",
+                }
+            ),
+            "street": forms.TextInput(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "Street",
+                }
+            ),
+            "branch": forms.TextInput(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "Nova Poshta branch (optional)",
+                }
+            ),
+        }

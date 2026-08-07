@@ -1,4 +1,6 @@
 from django.urls import path
+
+from order.views import OrderSuccessView
 from .views import AuthorDetailView, AuthorsListView, CategoriesListView, CategoryBooksListView, DeleteFeedbackView, MainPageView, BooksListView, BookDetailView, AddFeedbackView, UpdateFeedbackView
 
 app_name = "shop"

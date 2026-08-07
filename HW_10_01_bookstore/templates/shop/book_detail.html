@@ -55,6 +55,33 @@
             </p>
         {% endif %}
 
+        {% if user.is_authenticated %}
+
+            <form method="post"
+                action="{% url 'order:add_to_cart' book.id %}"
+                class="d-inline">
+
+                {% csrf_token %}
+
+                <input type="hidden"
+                    name="next"
+                    value="{{ request.get_full_path }}">
+
+                <button type="submit"
+                        class="btn btn-dark btn-sm">
+                    Add to Cart
+                </button>
+
+            </form>
+
+        {% else %}
+
+            <span class="text-muted small">
+                Login to order
+            </span>
+
+        {% endif %}
+
     </div>
 </div>
 

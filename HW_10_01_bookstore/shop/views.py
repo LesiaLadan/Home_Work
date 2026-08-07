@@ -55,33 +55,6 @@ class MainPageView(TemplateView):
         return context
 
 
-# def main_page(request):
-#     top_books = Book.objects.annotate(avg_rating=Avg("rating__rating")).order_by(
-#         "-avg_rating"
-#     )[:5]
-
-#     new_books = Book.objects.order_by("-publication_date")[:5]
-
-#     popular_books = Book.objects.annotate(reviews_count=Count("rating")).order_by(
-#         "-reviews_count"
-#     )[:5]
-
-#     top_authors = Author.objects.annotate(books_count=Count("books")).order_by(
-#         "-books_count"
-#     )[:5]
-
-#     return render(
-#         request,
-#         "shop/main_page.html",
-#         {
-#             "top_books": top_books,
-#             "new_books": new_books,
-#             "popular_books": popular_books,
-#             "top_authors": top_authors,
-#         },
-#     )
-
-
 class BooksListView(ListView):
     model = Book
     template_name = "shop/books_list.html"
@@ -107,30 +80,6 @@ class BooksListView(ListView):
         return queryset
 
 
-# def books_list(request):
-# book_query = request.GET.get("q", "")
-
-# books = Book.objects.all()
-
-# if book_query:
-#     books = books.filter(
-#         Q(title__icontains=book_query)
-#         | Q(author__first_name__icontains=book_query)
-#         | Q(author__last_name__icontains=book_query)
-#     ).distinct()
-
-# paginator = Paginator(books, 5)
-# page_number = request.GET.get("page")
-# books = paginator.get_page(page_number)
-
-# return render(request, "shop/books_list.html", {"books": books})
-
-
-# def book_detail(request, book_id):
-#     book = Book.objects.get(id=book_id)
-#     return render(request, "shop/book_detail.html", {"book": book})
-
-
 class BookDetailView(DetailView):
     model = Book
     template_name = "shop/book_detail.html"
@@ -145,23 +94,6 @@ class BookDetailView(DetailView):
         )
 
         return book
-
-
-# def authors_list(request):
-# author_query = request.GET.get("q", "")
-
-# authors = Author.objects.all()
-
-# if author_query:
-#     authors = authors.filter(
-#         Q(first_name__icontains=author_query) | Q(last_name__icontains=author_query)
-#     )
-
-# paginator = Paginator(authors, 5)
-# page_number = request.GET.get("page")
-# authors = paginator.get_page(page_number)
-
-# return render(request, "shop/authors_list.html", {"authors": authors})
 
 
 class AuthorsListView(ListView):
@@ -186,9 +118,6 @@ class AuthorsListView(ListView):
         return queryset
 
 
-# def author_detail(request, author_id):
-#     author = Author.objects.get(id=author_id)
-#     return render(request, "shop/author_detail.html", {"author": author})
 class AuthorDetailView(DetailView):
     model = Author
     template_name = "shop/author_detail.html"
@@ -202,22 +131,6 @@ class AuthorDetailView(DetailView):
             author=str(author),
         )
         return author
-
-
-# def categories_list(request):
-#     category_query = request.GET.get("q", "")
-
-#     categories = Category.objects.all()
-
-#     if category_query:
-#         categories = categories.filter(name__icontains=category_query)
-
-#     paginator = Paginator(categories, 5)
-#     page_number = request.GET.get("page")
-#     categories = paginator.get_page(page_number)
-
-#     context = {"categories": categories}
-#     return render(request, "shop/categories_list.html", context)
 
 
 class CategoriesListView(ListView):
@@ -258,26 +171,6 @@ class CategoryBooksListView(ListView):
         context = super().get_context_data(**kwargs)
         context["category"] = Category.objects.get(pk=self.kwargs["pk"])
         return context
-
-
-# def add_review(request, book_id):
-#     book = Book.objects.get(id=book_id)
-
-#     if request.method == "POST":
-#         rating_value = int(request.POST.get("rating"))
-#         review_text = request.POST.get("review")
-
-#         rating = Rating.objects.create(
-#             book=book, user=request.user, rating=rating_value
-#         )
-
-#         avg_rating = Rating.objects.filter(book=book).aggregate(Avg("rating"))[
-#             "rating__avg"
-#         ]
-#         book.calculated_avg_rating = avg_rating
-#         book.save()
-
-#     return render(request, "shop/book_detail.html", {"book": book})
 
 
 class AddFeedbackView(LoginRequiredMixin, CreateView):

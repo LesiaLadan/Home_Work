@@ -17,6 +17,11 @@ class OrderDetails(models.Model):
         return f"{self.book.title}, {self.order.id}, {self.quantity}"
 
 
+class PaymentMethod(enum.Enum):
+    CASH = "cash"
+    CARD = "card"
+
+
 class PaymentStatus(enum.Enum):
     PENDING = "pending"
     COMPLETED = "completed"
@@ -48,7 +53,11 @@ class Order(models.Model):
         default=OrderStatus.PENDING.value,
     )
     total_price = models.DecimalField(max_digits=8, decimal_places=2)
-    payment_method = models.CharField(max_length=50)
+    payment_method = models.CharField(
+        max_length=20,
+        choices=[(item.value, item.name.title()) for item in PaymentMethod],
+        default=PaymentMethod.CASH.value,
+    )
     payment_status = models.CharField(
         max_length=20,
         choices=[(item.value, item.name.title()) for item in PaymentStatus],
@@ -57,4 +66,4 @@ class Order(models.Model):
     ttn = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
-        return f"Order {self.id}"
+        return f"Order {self.pk}"

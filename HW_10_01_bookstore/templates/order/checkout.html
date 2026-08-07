@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block title %}Checkout | BookStore{% endblock %}
+
+{% block content %}
+
+<h2>Checkout</h2>
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-warning">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<div class="row">
+
+    <div class="col-md-8">
+
+        <form method="post"
+              action="{% url 'order:place_order' %}">
+
+            {% csrf_token %}
+
+            <div class="card mb-4">
+
+                <div class="card-header">
+                    Delivery Address
+                </div>
+
+                <div class="card-body">
+
+                    <div class="mb-3">
+                        {{ form.postal_code.label_tag }}
+                        {{ form.postal_code }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.city.label_tag }}
+                        {{ form.city }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.street.label_tag }}
+                        {{ form.street }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.branch.label_tag }}
+                        {{ form.branch }}
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="card mb-4">
+
+                <div class="card-header">
+                    Payment Method
+                </div>
+
+                <div class="card-body">
+
+                    {{ form.payment_method }}
+
+                </div>
+
+            </div>
+
+            <button
+                type="submit"
+                class="btn btn-dark">
+                Confirm Order
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <div class="col-md-4">
+
+        <div class="card">
+
+            <div class="card-header">
+                Order Summary
+            </div>
+
+            <div class="card-body">
+
+                {% for item in checkout_data %}
+
+                    <div class="mb-3">
+
+                        <strong>{{ item.book.title }}</strong><br>
+
+                        {{ item.quantity }} × {{ item.price }} UAH
+
+                        <div class="text-end">
+                            <strong>{{ item.subtotal }} UAH</strong>
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+                <hr>
+
+                <h5 class="text-end">
+                    Total: {{ total }} UAH
+                </h5>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

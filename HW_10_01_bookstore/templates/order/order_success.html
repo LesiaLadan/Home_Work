@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Order Success{% endblock %}
+
+{% block content %}
+
+<h2>Thank you!</h2>
+
+<p>Your order has been successfully placed.</p>
+
+<a href="{% url 'shop:books_list' %}" class="btn btn-dark">
+    Continue shopping
+</a>
+
+{% endblock %}
+

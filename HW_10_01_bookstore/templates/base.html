@@ -16,6 +16,74 @@
 
 <nav class="navbar custom-navbar px-3">
 
+    <div class="d-flex align-items-center gap-3">
+        <a class="navbar-brand text-white"
+           href="{% url 'shop:main_page' %}">
+            BookStore
+        </a>
+
+        <a class="nav-link text-white"
+           href="{% url 'shop:books_list' %}">
+            Books
+        </a>
+
+        <a class="nav-link text-white"
+           href="{% url 'shop:authors_list' %}">
+            Authors
+        </a>
+
+        <a class="nav-link text-white"
+           href="{% url 'shop:categories_list' %}">
+            Categories
+        </a>
+
+        {% if user.is_authenticated %}
+            {% comment %} <a class="nav-link text-white"
+               href="{% url 'order:order_list' %}">
+                My Orders
+            </a> {% endcomment %}
+
+            <a class="nav-link text-white"
+               href="{% url 'order:cart' %}">
+                🛒 Cart
+            </a>
+        {% endif %}
+    </div>
+
+    <div class="d-flex align-items-center gap-3">
+
+        {% if user.is_authenticated %}
+            <span class="text-white">
+                Welcome, {{ user.username }}!
+            </span>
+
+            <form method="post" action="{% url 'user_management:logout' %}">
+                {% csrf_token %}
+                <button type="submit"
+                        class="btn btn-link text-white p-0">
+                    Logout
+                </button>
+            </form>
+
+        {% else %}
+
+            <a class="nav-link text-white"
+               href="{% url 'user_management:register' %}">
+                Registration
+            </a>
+
+            <a class="nav-link text-white"
+               href="{% url 'user_management:login' %}">
+                Login
+            </a>
+
+        {% endif %}
+    </div>
+
+</nav>
+
+{% comment %} <nav class="navbar custom-navbar px-3">
+
     <a class="navbar-brand text-white"
        href="{% url 'shop:main_page' %}">
         BookStore
@@ -72,7 +140,7 @@
 
     </div>
 
-</nav>
+</nav> {% endcomment %}
 
 <div class="container mt-4">
   {% block content %}{% endblock %}
