@@ -1,0 +1,526 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-09 12:55+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Ukrainian\n"
+"Language: uk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != "
+"11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % "
+"100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || "
+"(n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
+
+#: order/forms.py:10 templates/order/checkout.html:63
+msgid "Payment Method"
+msgstr "Спосіб оплати"
+
+#: order/forms.py:25
+msgid "Postal Code"
+msgstr "Поштовий індекс"
+
+#: order/forms.py:26 order/forms.py:41 shop/models.py:12
+#: user_management/models.py:30
+msgid "City"
+msgstr "Місто"
+
+#: order/forms.py:27 order/forms.py:47 user_management/models.py:34
+msgid "Street"
+msgstr "Вулиця"
+
+#: order/forms.py:28
+msgid "Nova Poshta Branch"
+msgstr "Відділення Нової Пошти"
+
+#: order/forms.py:35 user_management/models.py:26
+msgid "Postal code"
+msgstr "Поштовий індекс"
+
+#: order/forms.py:54
+msgid "Nova Poshta branch (optional)"
+msgstr "Відділення Нової Пошти (необов'язково)"
+
+#: order/models.py:14
+msgid "Order"
+msgstr "Замовлення"
+
+#: order/models.py:19 shop/models.py:137 templates/order/cart.html:16
+#: user_management/models.py:57
+msgid "Book"
+msgstr "Книга"
+
+#: order/models.py:22 templates/order/cart.html:18
+msgid "Quantity"
+msgstr "Кількість"
+
+#: order/models.py:25 shop/models.py:85 templates/order/cart.html:17
+#: templates/shop/books_list.html:66
+msgid "Price"
+msgstr "Ціна"
+
+#: order/models.py:58 user_management/models.py:46 user_management/models.py:62
+msgid "Owner"
+msgstr "Власник"
+
+#: order/models.py:64
+msgid "Delivery address"
+msgstr "Адреса доставки"
+
+#: order/models.py:68
+msgid "Order date"
+msgstr "Дата замовлення"
+
+#: order/models.py:73
+msgid "Status"
+msgstr "Статус"
+
+#: order/models.py:80
+msgid "Total price"
+msgstr "Загальна сума"
+
+#: order/models.py:86
+msgid "Payment method"
+msgstr "Спосіб оплати"
+
+#: order/models.py:93
+msgid "Payment status"
+msgstr "Статус оплати"
+
+#: order/models.py:100
+msgid "TTN"
+msgstr "ТТН"
+
+#: shop/forms.py:12 shop/models.py:146
+msgid "Rating"
+msgstr "Оцінка"
+
+#: shop/forms.py:13 shop/models.py:149 templates/shop/book_detail.html:91
+msgid "Feedback"
+msgstr "Відгук"
+
+#: shop/models.py:8 shop/models.py:46
+msgid "Name"
+msgstr "Ім'я"
+
+#: shop/models.py:16
+msgid "Website"
+msgstr "Вебсайт"
+
+#: shop/models.py:28 user_management/forms.py:21
+msgid "First name"
+msgstr "Ім'я"
+
+#: shop/models.py:32 user_management/forms.py:22
+msgid "Last name"
+msgstr "Прізвище"
+
+#: shop/models.py:36
+msgid "Biography"
+msgstr "Біографія"
+
+#: shop/models.py:56
+msgid "Title"
+msgstr "Назва"
+
+#: shop/models.py:62
+msgid "Author"
+msgstr "Автор"
+
+#: shop/models.py:65
+msgid "ISBN"
+msgstr "ISBN"
+
+#: shop/models.py:70
+msgid "Publication date"
+msgstr "Дата публікації"
+
+#: shop/models.py:75
+msgid "Publisher"
+msgstr "Видавець"
+
+#: shop/models.py:78
+msgid "Added date"
+msgstr "Дата додавання"
+
+#: shop/models.py:82
+msgid "In stock"
+msgstr "В наявності"
+
+#: shop/models.py:90
+msgid "Wholesale price"
+msgstr "Оптова ціна"
+
+#: shop/models.py:97
+msgid "Language"
+msgstr "Мова"
+
+#: shop/models.py:103 templates/shop/category_detail.html:17
+msgid "Category"
+msgstr "Категорія"
+
+#: shop/models.py:106
+msgid "Calculated average rating"
+msgstr "Розрахунковий середній рейтинг"
+
+#: shop/models.py:111
+msgid "Description"
+msgstr "Опис"
+
+#: shop/models.py:119
+msgid "Can view wholesale price"
+msgstr "Може переглядати оптову ціну"
+
+#: shop/models.py:143
+msgid "User"
+msgstr "Користувач"
+
+#: templates/base.html:23 templates/base.html:33
+#: templates/shop/authors_list.html:5 templates/shop/authors_list.html:9
+msgid "Authors"
+msgstr "Автори"
+
+#: templates/base.html:28 templates/shop/author_detail.html:31
+#: templates/shop/books_list.html:5 templates/shop/books_list.html:9
+#: templates/shop/category_detail.html:20
+msgid "Books"
+msgstr "Книги"
+
+#: templates/base.html:38 templates/shop/categories_list.html:5
+#: templates/shop/categories_list.html:9
+msgid "Categories"
+msgstr "Категорії"
+
+#: templates/base.html:50 templates/order/cart.html:5
+#: templates/order/cart.html:9
+msgid "Cart"
+msgstr "Кошик"
+
+#: templates/base.html:59
+msgid "Welcome"
+msgstr "Вітаємо"
+
+#: templates/base.html:66
+msgid "Logout"
+msgstr "Вийти"
+
+#: templates/base.html:74 templates/user_management/register.html:6
+msgid "Registration"
+msgstr "Реєстрація"
+
+#: templates/base.html:79 templates/user_management/login.html:6
+#: templates/user_management/login.html:20
+#: templates/user_management/login.html:54
+#: templates/user_management/register.html:64
+msgid "Login"
+msgstr "Увійти"
+
+#: templates/order/cart.html:19
+msgid "Sum"
+msgstr "Сума"
+
+#: templates/order/cart.html:20
+msgid "Action"
+msgstr "Дія"
+
+#: templates/order/cart.html:36 templates/order/cart.html:44
+#: templates/order/cart.html:69 templates/order/checkout.html:101
+#: templates/order/checkout.html:104 templates/order/checkout.html:114
+#: templates/shop/book_detail.html:24 templates/shop/book_detail.html:29
+#: templates/shop/book_detail.html:34 templates/shop/books_list.html:55
+#: templates/shop/books_list.html:60 templates/shop/books_list.html:67
+#: templates/shop/category_detail.html:45
+msgid "UAH"
+msgstr "грн"
+
+#: templates/order/cart.html:52
+msgid "Remove"
+msgstr "Видалити"
+
+#: templates/order/cart.html:65 templates/order/checkout.html:114
+msgid "Total"
+msgstr "Всього"
+
+#: templates/order/cart.html:80
+msgid "Proceed to Checkout"
+msgstr "Перейти до оформлення"
+
+#: templates/order/cart.html:88
+msgid "Your cart is empty"
+msgstr "Ваш кошик порожній"
+
+#: templates/order/cart.html:93 templates/order/order_success.html:14
+msgid "Continue shopping"
+msgstr "Продовжити покупки"
+
+#: templates/order/checkout.html:5 templates/order/checkout.html:9
+msgid "Checkout"
+msgstr "Оформлення замовлення"
+
+#: templates/order/checkout.html:31
+msgid "Delivery Address"
+msgstr "Адреса доставки"
+
+#: templates/order/checkout.html:77
+msgid "Confirm Order"
+msgstr "Підтвердити замовлення"
+
+#: templates/order/checkout.html:90
+msgid "Order Summary"
+msgstr "Підсумок замовлення"
+
+#: templates/order/order_success.html:9
+msgid "Thank you!"
+msgstr "Дякуємо!"
+
+#: templates/order/order_success.html:11
+msgid "Your order has been successfully placed."
+msgstr "Ваше замовлення успішно оформлено."
+
+#: templates/shop/add_feedback.html:5
+msgid "Add Review"
+msgstr "Додати відгук"
+
+#: templates/shop/add_feedback.html:9 templates/shop/book_detail.html:53
+msgid "Add Feedback"
+msgstr "Додати відгук"
+
+#: templates/shop/add_feedback.html:20
+msgid "Submit Feedback"
+msgstr "Надіслати відгук"
+
+#: templates/shop/add_feedback.html:25 templates/shop/delete_feedback.html:36
+#: templates/shop/update_feedback.html:29
+msgid "Cancel"
+msgstr "Скасувати"
+
+#: templates/shop/author_detail.html:25
+msgid "No biography available."
+msgstr "Біографія відсутня."
+
+#: templates/shop/author_detail.html:43
+msgid "This author has no books."
+msgstr "У цього автора немає книг."
+
+#: templates/shop/author_detail.html:50
+msgid "← Back to Authors"
+msgstr "← Назад до авторів"
+
+#: templates/shop/authors_list.html:20 templates/shop/books_list.html:18
+#: templates/shop/categories_list.html:20
+msgid "Search"
+msgstr "Пошук"
+
+#: templates/shop/authors_list.html:24 templates/shop/categories_list.html:25
+msgid "✕"
+msgstr "✕"
+
+#: templates/shop/authors_list.html:39
+msgid "No authors found"
+msgstr "Авторів не знайдено"
+
+#: templates/shop/authors_list.html:51 templates/shop/books_list.html:124
+#: templates/shop/category_detail.html:85
+msgid "Previous"
+msgstr "Попередня"
+
+#: templates/shop/authors_list.html:66 templates/shop/books_list.html:139
+#: templates/shop/category_detail.html:100
+msgid "Next"
+msgstr "Наступна"
+
+#: templates/shop/book_detail.html:18
+msgid "ISBN:"
+msgstr "ISBN:"
+
+#: templates/shop/book_detail.html:23
+msgid "Retail Price:"
+msgstr "Роздрібна ціна:"
+
+#: templates/shop/book_detail.html:28
+msgid "Wholesale Price:"
+msgstr "Оптова ціна:"
+
+#: templates/shop/book_detail.html:33
+msgid "Price:"
+msgstr "Ціна:"
+
+#: templates/shop/book_detail.html:38
+msgid "Average Rating:"
+msgstr "Середній рейтинг:"
+
+#: templates/shop/book_detail.html:43
+msgid "Description:"
+msgstr "Опис:"
+
+#: templates/shop/book_detail.html:57
+msgid "Login to leave feedback."
+msgstr "Увійдіть, щоб залишити відгук."
+
+#: templates/shop/book_detail.html:75 templates/shop/books_list.html:91
+#: templates/shop/category_detail.html:52
+msgid "Add to Cart"
+msgstr "Додати до кошика"
+
+#: templates/shop/book_detail.html:83 templates/shop/books_list.html:99
+msgid "Login to order"
+msgstr "Увійдіть, щоб замовити"
+
+#: templates/shop/book_detail.html:117 templates/shop/update_feedback.html:6
+#: templates/shop/update_feedback.html:11
+msgid "Edit Feedback"
+msgstr "Редагувати відгук"
+
+#: templates/shop/book_detail.html:121 templates/shop/delete_feedback.html:6
+#: templates/shop/delete_feedback.html:11
+msgid "Delete Feedback"
+msgstr "Видалити відгук"
+
+#: templates/shop/book_detail.html:131
+msgid "There is no feedback yet"
+msgstr "Відгуків ще немає"
+
+#: templates/shop/book_detail.html:139
+msgid "← Back to Books"
+msgstr "← Назад до книг"
+
+#: templates/shop/books_list.html:54
+msgid "Retail:"
+msgstr "Роздрібна:"
+
+#: templates/shop/books_list.html:59
+msgid "Wholesale:"
+msgstr "Оптова:"
+
+#: templates/shop/books_list.html:111
+msgid "No books found"
+msgstr "Книг не знайдено"
+
+#: templates/shop/categories_list.html:44
+msgid "No categories found."
+msgstr "Категорій не знайдено."
+
+#: templates/shop/category_detail.html:62
+msgid "There are no books in this category."
+msgstr "У цій категорії немає книг."
+
+#: templates/shop/category_detail.html:73
+msgid "Back to Categories"
+msgstr "Назад до категорій"
+
+#: templates/shop/delete_feedback.html:17
+msgid "Are you sure you want to delete your feedback for"
+msgstr "Ви впевнені, що хочете видалити свій відгук для"
+
+#: templates/shop/delete_feedback.html:31
+msgid "Delete"
+msgstr "Видалити"
+
+#: templates/shop/main_page.html:5
+msgid "Home"
+msgstr "Головна"
+
+#: templates/shop/main_page.html:9
+msgid "Top Books"
+msgstr "Найкращі книги"
+
+#: templates/shop/main_page.html:24 templates/shop/main_page.html:46
+#: templates/shop/main_page.html:75
+msgid "No books"
+msgstr "Немає книг"
+
+#: templates/shop/main_page.html:29
+msgid "New Books"
+msgstr "Нові книги"
+
+#: templates/shop/main_page.html:51
+msgid "Popular Books"
+msgstr "Популярні книги"
+
+#: templates/shop/main_page.html:63
+msgid ""
+"\n"
+"                        feedback\n"
+"                    "
+msgid_plural ""
+"\n"
+"                        feedbacks\n"
+"                    "
+msgstr[0] "відгук"
+msgstr[1] "відгуки"
+msgstr[2] "відгуків"
+msgstr[3] "відгуку"
+
+#: templates/shop/main_page.html:69
+msgid "No feedback yet"
+msgstr "Відгуків ще немає"
+
+#: templates/shop/main_page.html:80
+msgid "Top Authors"
+msgstr "Найкращі автори"
+
+#: templates/shop/main_page.html:95
+msgid "No authors"
+msgstr "Немає авторів"
+
+#: templates/shop/main_page.html:103
+msgid "Recently Viewed"
+msgstr "Нещодавно переглянуті"
+
+#: templates/shop/main_page.html:119
+msgid "You haven't viewed any books yet."
+msgstr "Ви ще не переглядали жодної книги."
+
+#: templates/shop/update_feedback.html:24
+msgid "Save Changes"
+msgstr "Зберегти зміни"
+
+#: templates/user_management/login.html:62
+msgid "Don't have an account?"
+msgstr "Немає облікового запису?"
+
+#: templates/user_management/login.html:65
+#: templates/user_management/register.html:54
+msgid "Register"
+msgstr "Зареєструватися"
+
+#: templates/user_management/register.html:20
+msgid "Create Account"
+msgstr "Створити обліковий запис"
+
+#: templates/user_management/register.html:62
+msgid "Already have an account?"
+msgstr "Вже маєте обліковий запис?"
+
+#: user_management/forms.py:20
+msgid "Username"
+msgstr "Ім'я користувача"
+
+#: user_management/forms.py:23
+msgid "Email"
+msgstr "Електронна пошта"
+
+#: user_management/forms.py:24 user_management/models.py:10
+msgid "Phone"
+msgstr "Телефон"
+
+#: user_management/models.py:15
+msgid "Birth date"
+msgstr "Дата народження"
+
+#: user_management/models.py:38
+msgid "Nova Poshta branch"
+msgstr "Відділення Нової Пошти"
+
+#: user_management/models.py:65
+msgid "Viewed at"
+msgstr "Переглянуто"

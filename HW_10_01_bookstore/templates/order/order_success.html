@@ -1,15 +1,17 @@
 {% extends "base.html" %}
 
+{% load i18n %}
+
 {% block title %}Order Success{% endblock %}
 
 {% block content %}
 
-<h2>Thank you!</h2>
+<h2>{% trans "Thank you!" %}</h2>
 
-<p>Your order has been successfully placed.</p>
+<p> {% trans "Your order has been successfully placed." %} </p>
 
 <a href="{% url 'shop:books_list' %}" class="btn btn-dark">
-    Continue shopping
+    {% trans "Continue shopping" %} 
 </a>
 
 {% endblock %}

@@ -25,3 +25,5 @@ build/
 .pytest_cache/
 .coverage
 htmlcov/
+
+HW_10_01_bookstore/.env_docker

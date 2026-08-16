@@ -5,16 +5,19 @@ from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.db import transaction
+from psycopg import logger
 from shop.models import Book
 from user_management.models import DeliveryAddress
 from .forms import DeliveryAddressForm
 from .models import Order, OrderDetails, PaymentStatus, OrderStatus, PaymentMethod
 import stripe
-from book_store import settings
+# from book_store import settings
 from .cart import Cart
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from django.core.mail import send_mail
+from asgiref.sync import sync_to_async
+from django.conf import settings
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 client = stripe.StripeClient(settings.STRIPE_SECRET_KEY)
@@ -260,10 +263,10 @@ class OrderSuccessView(LoginRequiredMixin, TemplateView):
         return context
 
 
-def create_checkout_session(request, order_id):
+async def create_checkout_session(request, order_id):
     try:
-        order = get_object_or_404(Order, pk=order_id, owner=request.user)
-        session = stripe.checkout.Session.create(
+        order = await Order.objects.aget(pk=order_id, owner=request.user)
+        session = await sync_to_async(stripe.checkout.Session.create)(
             payment_method_types=["card"],
             line_items=[
                 {
@@ -283,18 +286,24 @@ def create_checkout_session(request, order_id):
             success_url="http://localhost:8000/orders/success/?checkout_session_id={CHECKOUT_SESSION_ID}",
             cancel_url="http://localhost:8000/order_error/?error=epayment_error",
         )
-        print(session.id)
+        if not session.url:
+            raise ValueError("Stripe checkout session URL is missing")
+        logger.info(
+            "Stripe checkout session created",
+            order_id=order.pk,
+            session_id=session.id,
+        )
         return redirect(session.url)
 
     except Exception as e:
-        messages.error(
+        await sync_to_async(messages.error)(
             request, f"Error creating Stripe checkout session: {str(e)}"
             )
         return redirect("order:checkout")
 
 
 @csrf_exempt
-def stripe_webhook(request):
+async def stripe_webhook(request):
     payload = request.body
     sig_header = request.headers.get("Stripe-Signature")
 
@@ -313,10 +322,10 @@ def stripe_webhook(request):
         order_id = session["metadata"]["order_id"]
 
         try:
-            order = Order.objects.get(pk=order_id)
+            order = await Order.objects.aget(pk=order_id)
 
             order.payment_status = PaymentStatus.COMPLETED.value
-            order.save(update_fields=["payment_status"])
+            await order.asave(update_fields=["payment_status"])
 
         except Order.DoesNotExist:
             return HttpResponse(status=404)

@@ -1,15 +1,16 @@
+from asgiref.sync import sync_to_async
 from django.db.models.aggregates import Avg, Count
 from django.db.models import Q
 from django.urls import reverse
 from django.views.generic import (
     DetailView,
     ListView,
-    TemplateView,
     CreateView,
     UpdateView,
     DeleteView,
+    View,
 )
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from shop.models import Author, Book, Category, Rating
 from shop.forms import RatingForm
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -20,39 +21,62 @@ import structlog
 logger = structlog.get_logger(__name__)
 
 
-class MainPageView(TemplateView):
+class MainPageView(View):
     template_name = "shop/main_page.html"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        context["top_books"] = (
-            Book.objects.annotate(
-                avg_rating=Avg("ratings__rating"), ratings_count=Count("ratings")
+    async def get(self, request, *args, **kwargs):
+        top_books = [
+            book
+            async for book in (
+                Book.objects.annotate(
+                    avg_rating=Avg("ratings__rating"),
+                    ratings_count=Count("ratings"),
+                )
+                .filter(ratings_count__gt=0)
+                .order_by("-avg_rating")[:5]
             )
-            .filter(ratings_count__gt=0)
-            .order_by("-avg_rating")[:5]
-        )
+        ]
+        new_books = [
+            book async for book in Book.objects.order_by("-publication_date")[:5]
+        ]
 
-        context["new_books"] = Book.objects.order_by("-publication_date")[:5]
-
-        context["popular_books"] = Book.objects.annotate(
-            ratings_count=Count("ratings")
-        ).order_by("-ratings_count")[:5]
-
-        context["top_authors"] = Author.objects.annotate(
-            books_count=Count("books")
-        ).order_by("-books_count")[:5]
-
-        if self.request.user.is_authenticated:
-            context["last_viewed"] = (
-                LastViewedBooks.objects.filter(owner=self.request.user)
-                .select_related("book")
-                .order_by("-viewed_at")[:5]
+        popular_books = [
+            book
+            async for book in (
+                Book.objects.annotate(ratings_count=Count("ratings")).order_by(
+                    "-ratings_count"
+                )[:5]
             )
+        ]
+
+        top_authors = [
+            author
+            async for author in (
+                Author.objects.annotate(books_count=Count("books")).order_by(
+                    "-books_count"
+                )[:5]
+            )
+        ]
+
+        last_viewed = []
+        if request.user.is_authenticated:
+            last_viewed = [
+                viewed_book
+                async for viewed_book in (
+                    LastViewedBooks.objects.filter(owner=request.user)
+                    .select_related("book")
+                    .order_by("-viewed_at")[:5]
+                )
+            ]
+        context = {
+            "top_books": top_books,
+            "new_books": new_books,
+            "popular_books": popular_books,
+            "top_authors": top_authors,
+            "last_viewed": last_viewed,
+        }
         logger.info("Main page loaded")
-
-        return context
+        return await sync_to_async(render)(request, self.template_name, context)
 
 
 class BooksListView(ListView):
@@ -107,8 +131,7 @@ class AuthorsListView(ListView):
         author_query = self.request.GET.get("q", "")
         if author_query:
             queryset = queryset.filter(
-                Q(first_name__icontains=author_query)
-                | Q(last_name__icontains=author_query)
+                Q(first_name__icontains=author_query) | Q(last_name__icontains=author_query)
             )
             logger.info(
                 "Found authors matching query",

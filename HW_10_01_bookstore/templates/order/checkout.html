@@ -1,10 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}Checkout | BookStore{% endblock %}
+{% load i18n %}
+
+{% block title %}{% trans "Checkout"%} | BookStore{% endblock %}
 
 {% block content %}
 
-<h2>Checkout</h2>
+<h2>{% trans "Checkout"%}</h2>
 
 {% if messages %}
     {% for message in messages %}
@@ -26,7 +28,7 @@
             <div class="card mb-4">
 
                 <div class="card-header">
-                    Delivery Address
+                    {% trans "Delivery Address"%}
                 </div>
 
                 <div class="card-body">
@@ -58,7 +60,7 @@
             <div class="card mb-4">
 
                 <div class="card-header">
-                    Payment Method
+                    {% trans "Payment Method"%}
                 </div>
 
                 <div class="card-body">
@@ -72,7 +74,7 @@
             <button
                 type="submit"
                 class="btn btn-dark">
-                Confirm Order
+                {% trans "Confirm Order"%}
             </button>
 
         </form>
@@ -85,7 +87,7 @@
         <div class="card">
 
             <div class="card-header">
-                Order Summary
+                {% trans "Order Summary"%}
             </div>
 
             <div class="card-body">
@@ -96,10 +98,10 @@
 
                         <strong>{{ item.book.title }}</strong><br>
 
-                        {{ item.quantity }} × {{ item.price }} UAH
+                        {{ item.quantity }} × {{ item.price }} {% trans "UAH"%}
 
                         <div class="text-end">
-                            <strong>{{ item.subtotal }} UAH</strong>
+                            <strong>{{ item.subtotal }} {% trans "UAH"%}</strong>
                         </div>
 
                     </div>
@@ -109,7 +111,7 @@
                 <hr>
 
                 <h5 class="text-end">
-                    Total: {{ total }} UAH
+                    {% trans "Total"%}: {{ total }} {% trans "UAH"%}
                 </h5>
 
             </div>

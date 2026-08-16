@@ -1,10 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}Home{% endblock %}
+{% load i18n %}
+
+{% block title %}{% trans "Home" %}{% endblock %}
 
 {% block content %}
 
-<h2>Top Books</h2>
+<h2>{% trans "Top Books" %}</h2>
 <ul class="list-group mb-4">
     {% for book in top_books %}
         <li class="list-group-item d-flex justify-content-between">
@@ -19,12 +21,12 @@
         </li>
     {% empty %}
         <li class="list-group-item">
-            No books
+            {% trans "No books" %}
         </li>
     {% endfor %}
 </ul>
 
-<h2>New Books</h2>
+<h2>{% trans "New Books" %}</h2>
 <ul class="list-group mb-4">
     {% for book in new_books %}
         <li class="list-group-item d-flex justify-content-between">
@@ -41,12 +43,12 @@
         </li>
     {% empty %}
         <li class="list-group-item">
-            No books
+            {% trans "No books" %}
         </li>
     {% endfor %}
 </ul>
 
-<h2>Popular Books</h2>
+<h2>{% trans "Popular Books" %}</h2>
 <ul class="list-group mb-4">
     {% for book in popular_books %}
         <li class="list-group-item d-flex justify-content-between">
@@ -57,20 +59,25 @@
 
             <span class="meta">
                 {% if book.ratings_count %}
-                    {{ book.ratings_count }} feedback{{ book.ratings_count|pluralize }}
+                    {{ book.ratings_count }}
+                    {% blocktrans count count=book.ratings_count %}
+                        feedback
+                    {% plural %}
+                        feedbacks
+                    {% endblocktrans %}
                 {% else %}
-                    No feedback yet
+                    {% trans "No feedback yet" %}
                 {% endif %}
             </span>
         </li>
     {% empty %}
         <li class="list-group-item">
-            No books
+            {% trans "No books" %}
         </li>
     {% endfor %}
 </ul>
 
-<h2>Top Authors</h2>
+<h2>{% trans "Top Authors" %}</h2>
 <ul class="list-group">
     {% for author in top_authors %}
         <li class="list-group-item d-flex justify-content-between">
@@ -85,7 +92,7 @@
         </li>
     {% empty %}
         <li class="list-group-item">
-            No authors
+            {% trans "No authors" %}
         </li>
     {% endfor %}
 </ul>
@@ -93,7 +100,7 @@
 
 {% if user.is_authenticated %}
 
-<h2 class="mt-5">Recently Viewed</h2>
+<h2 class="mt-5">{% trans "Recently Viewed" %}</h2>
 
 <ul class="list-group mb-4">
 
@@ -109,7 +116,7 @@
     {% empty %}
 
         <li class="list-group-item text-muted">
-            You haven't viewed any books yet.
+            {% trans "You haven't viewed any books yet." %}
         </li>
 
     {% endfor %}

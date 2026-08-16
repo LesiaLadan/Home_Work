@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 
+{% load i18n %}
+
+
 {% block title %}
 {{ book.title }} | BookStore
 {% endblock %}
@@ -12,32 +15,32 @@
     <div class="card-body">
 
         <p>
-            <strong>ISBN:</strong> {{ book.isbn }}
+            <strong>{% trans "ISBN:"%}</strong> {{ book.isbn }}
         </p>
 
         {% if perms.shop.view_wholesale_price %}
             <p>
-                <strong>Retail Price:</strong>
-                {{ book.price }} UAH
+                <strong>{% trans "Retail Price:"%}</strong>
+                {{ book.price }} {% trans "UAH"%}
             </p>
 
             <p>
-                <strong>Wholesale Price:</strong>
-                {{ book.wholesale_price }} UAH
+                <strong>{% trans "Wholesale Price:"%}</strong>
+                {{ book.wholesale_price }} {% trans "UAH"%}
             </p>
         {% else %}
             <p>
-                <strong>Price:</strong>
-                {{ book.price }} UAH
+                <strong>{% trans "Price:"%}</strong>
+                {{ book.price }} {% trans "UAH"%}
             </p>
         {% endif %}
         <p>
-            <strong>Average Rating:</strong>
+            <strong>{% trans "Average Rating:"%}</strong>
             {{ book.calculated_avg_rating }}
         </p>
 
         <p>
-            <strong>Description:</strong>
+            <strong>{% trans "Description:"%}</strong>
         </p>
 
         <p>
@@ -47,11 +50,11 @@
         {% if user.is_authenticated %}
             <a href="{% url 'shop:add_feedback' book.pk %}"
                class="btn btn-dark">
-                Add Feedback
+                {% trans "Add Feedback"%}
             </a>
         {% else %}
             <p class="text-muted mt-3">
-                Login to leave feedback.
+                {% trans "Login to leave feedback."%}
             </p>
         {% endif %}
 
@@ -69,7 +72,7 @@
 
                 <button type="submit"
                         class="btn btn-dark btn-sm">
-                    Add to Cart
+                    {% trans "Add to Cart"%}
                 </button>
 
             </form>
@@ -77,7 +80,7 @@
         {% else %}
 
             <span class="text-muted small">
-                Login to order
+                {% trans "Login to order"%}
             </span>
 
         {% endif %}
@@ -85,7 +88,7 @@
     </div>
 </div>
 
-<h3 class="mt-4">Feedback</h3>
+<h3 class="mt-4">{% trans "Feedback"%}</h3>
 
 {% for rating in book.ratings.all %}
 
@@ -111,11 +114,11 @@
             {% if user.is_authenticated and user == rating.user %}
                 <a href="{% url 'shop:update_feedback' rating.pk %}"
                    class="btn btn-outline-dark btn-sm">
-                    Edit Feedback
+                    {% trans "Edit Feedback"%}
                 </a>
                 <a href="{% url 'shop:delete_feedback' rating.pk %}"
                     class="btn btn-outline-danger btn-sm">
-                    Delete Feedback
+                    {% trans "Delete Feedback"%}
                 </a>
             {% endif %}
 
@@ -125,7 +128,7 @@
 {% empty %}
 
     <div class="alert alert-light border mt-3">
-        There is no feedback yet
+        {% trans "There is no feedback yet"%}
     </div>
 
 {% endfor %}
@@ -133,7 +136,7 @@
 <div class="mt-4">
     <a href="{% url 'shop:books_list' %}"
        class="btn btn-secondary">
-        ← Back to Books
+        {% trans "← Back to Books"%}
     </a>
 </div>
 

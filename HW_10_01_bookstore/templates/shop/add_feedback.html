@@ -1,10 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}Add Review | BookStore{% endblock %}
+{% load i18n %}
+
+{% block title %}{% trans "Add Review"%} | BookStore{% endblock %}
 
 {% block content %}
 
-<h2>Add Feedback</h2>
+<h2>{% trans "Add Feedback"%}</h2>
 
 <div class="card mt-3">
     <div class="card-body">
@@ -15,12 +17,12 @@
             {{ form.as_p }}
 
             <button type="submit" class="btn btn-dark">
-                Submit Feedback
+                {% trans "Submit Feedback"%}
             </button>
 
             <a href="{% url 'shop:book_detail' view.kwargs.pk %}"
                class="btn btn-secondary">
-                Cancel
+                {% trans "Cancel"%}
             </a>
         </form>
 

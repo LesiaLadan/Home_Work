@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 
+{% load i18n %}
+
 {% block title %}
-Login | BookStore
+{% trans "Login" %} | BookStore
 {% endblock %}
 
 {% block content %}
@@ -15,7 +17,7 @@ Login | BookStore
             <div class="card-body">
 
                 <h2 class="text-center mb-4">
-                    Login
+                    {% trans "Login" %}
                 </h2>
 
                 <form method="post">
@@ -49,7 +51,7 @@ Login | BookStore
                     {% endfor %}
 
                     <button type="submit" class="btn btn-dark w-100">
-                        Login
+                        {% trans "Login" %}
                     </button>
 
                 </form>
@@ -57,10 +59,10 @@ Login | BookStore
                 <hr>
 
                 <p class="text-center mb-0">
-                    Don't have an account?
+                    {% trans "Don't have an account?" %}
                     <a href="{% url 'user_management:register' %}"
                        class="text-decoration-none">
-                        Register
+                        {% trans "Register" %}
                     </a>
                 </p>
 

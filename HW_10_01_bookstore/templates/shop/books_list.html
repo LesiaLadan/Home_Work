@@ -1,10 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}Books | BookStore{% endblock %}
+{% load i18n %}
+
+{% block title %} {% trans "Books"%} | BookStore{% endblock %}
 
 {% block content %}
 
-<h2>Books</h2>
+<h2>{% trans "Books"%}</h2>
 
 <form method="GET" class="mb-3 d-flex gap-2">
     <input type="text"
@@ -13,7 +15,7 @@
            placeholder="Search by book title or author..."
            value="{{ request.GET.q }}">
     <button type="submit" class="btn btn-dark">
-        Search
+        {% trans "Search"%}
     </button>
     {% if request.GET.q %}
         <a href="?" class="btn btn-outline-danger">
@@ -49,20 +51,20 @@
                     {% if perms.shop.view_wholesale_price %}
 
                         <div>
-                            <strong>Retail:</strong>
-                            {{ book.price }} UAH
+                            <strong>{% trans "Retail:"%}</strong>
+                            {{ book.price }} {% trans "UAH"%}
                         </div>
 
                         <div class="small text-muted">
-                            <strong>Wholesale:</strong>
-                            {{ book.wholesale_price }} UAH
+                            <strong>{% trans "Wholesale:"%}</strong>
+                            {{ book.wholesale_price }} {% trans "UAH"%}
                         </div>
 
                     {% else %}
 
                         <div>
-                            <strong>Price:</strong>
-                            {{ book.price }} UAH
+                            <strong>{% trans "Price"%}:</strong>
+                            {{ book.price }} {% trans "UAH"%}
                         </div>
 
                     {% endif %}
@@ -86,7 +88,7 @@
 
                             <button type="submit"
                                     class="btn btn-dark btn-sm">
-                                Add to Cart
+                                {% trans "Add to Cart"%}
                             </button>
 
                         </form>
@@ -94,7 +96,7 @@
                     {% else %}
 
                         <span class="text-muted small">
-                            Login to order
+                            {% trans "Login to order"%}
                         </span>
 
                     {% endif %}
@@ -106,7 +108,7 @@
 
     {% empty %}
         <li class="list-group-item text-muted">
-            No books found
+            {% trans "No books found"%}
         </li>
     {% endfor %}
 
@@ -119,7 +121,7 @@
             <li class="page-item">
                 <a class="page-link"
                    href="?q={{ request.GET.q }}&page={{ page_obj.previous_page_number }}">
-                    Previous
+                    {% trans "Previous"%}
                 </a>
             </li>
         {% endif %}
@@ -134,7 +136,7 @@
             <li class="page-item">
                 <a class="page-link"
                    href="?q={{ request.GET.q }}&page={{ page_obj.next_page_number }}">
-                    Next
+                    {% trans "Next"%}
                 </a>
             </li>
         {% endif %}

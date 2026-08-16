@@ -1,4 +1,7 @@
 {% load static %}
+
+{% load i18n %}
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -19,22 +22,22 @@
     <div class="d-flex align-items-center gap-3">
         <a class="navbar-brand text-white"
            href="{% url 'shop:main_page' %}">
-            BookStore
+            {% trans "BookStore"%}
         </a>
 
         <a class="nav-link text-white"
            href="{% url 'shop:books_list' %}">
-            Books
+            {% trans "Books"%}
         </a>
 
         <a class="nav-link text-white"
            href="{% url 'shop:authors_list' %}">
-            Authors
+            {% trans "Authors"%}
         </a>
 
         <a class="nav-link text-white"
            href="{% url 'shop:categories_list' %}">
-            Categories
+            {% trans "Categories"%}
         </a>
 
         {% if user.is_authenticated %}
@@ -45,7 +48,7 @@
 
             <a class="nav-link text-white"
                href="{% url 'order:cart' %}">
-                🛒 Cart
+                🛒 {% trans "Cart" %}
             </a>
         {% endif %}
     </div>
@@ -54,14 +57,14 @@
 
         {% if user.is_authenticated %}
             <span class="text-white">
-                Welcome, {{ user.username }}!
+                {% trans "Welcome"%}, {{ user.username }}!
             </span>
 
             <form method="post" action="{% url 'user_management:logout' %}">
                 {% csrf_token %}
                 <button type="submit"
                         class="btn btn-link text-white p-0">
-                    Logout
+                    {% trans "Logout"%}
                 </button>
             </form>
 
@@ -69,78 +72,38 @@
 
             <a class="nav-link text-white"
                href="{% url 'user_management:register' %}">
-                Registration
+                {% trans "Registration"%}
             </a>
 
             <a class="nav-link text-white"
                href="{% url 'user_management:login' %}">
-                Login
+                {% trans "Login"%}
             </a>
 
         {% endif %}
-    </div>
 
+        <form action="{% url 'set_language' %}" method="post" class="d-flex align-items-center">
+            {% csrf_token %}
+
+            <input name="next" type="hidden" value="{{ request.get_full_path }}">
+
+            <select name="language"
+                    onchange="this.form.submit()"
+                    class="form-select form-select-sm language-select">
+                {% get_current_language as CURRENT_LANGUAGE %}
+
+                {% get_available_languages as LANGUAGES %}
+
+                {% for language_code, language_name in LANGUAGES %}
+                    <option value="{{ language_code }}"
+                        {% if language_code == CURRENT_LANGUAGE %}selected{% endif %}>
+                        {{ language_name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </form>
+    </div>
 </nav>
-
-{% comment %} <nav class="navbar custom-navbar px-3">
-
-    <a class="navbar-brand text-white"
-       href="{% url 'shop:main_page' %}">
-        BookStore
-    </a>
-
-    <div class="d-flex align-items-center gap-3">
-
-        <a class="nav-link text-white"
-           href="{% url 'shop:books_list' %}">
-            Books
-        </a>
-
-        <a class="nav-link text-white"
-           href="{% url 'shop:authors_list' %}">
-            Authors
-        </a>
-
-        <a class="nav-link text-white"
-           href="{% url 'shop:categories_list' %}">
-            Categories
-        </a>
-
-        {% if user.is_authenticated %}
-
-            <a class="nav-link text-white"
-               href="{% url 'order:order_list' %}">
-                My Orders
-            </a>
-
-            <span class="nav-link text-white">
-                Welcome, {{ user.username }}!
-            </span>
-
-            <form method="post" action="{% url 'user_management:logout' %}" style="display:inline;">
-                {% csrf_token %}
-                <button type="submit" class="nav-link text-white btn btn-link p-0">
-                    Logout
-                </button>
-            </form>
-
-        {% else %}
-
-            <a class="nav-link text-white"
-               href="{% url 'user_management:register' %}">
-                Registration
-            </a>
-
-            <a class="nav-link text-white"
-               href="{% url 'user_management:login' %}">
-                Login
-            </a>
-
-        {% endif %}
-
-    </div>
-
-</nav> {% endcomment %}
 
 <div class="container mt-4">
   {% block content %}{% endblock %}

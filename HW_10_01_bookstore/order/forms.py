@@ -1,11 +1,13 @@
 from django import forms
+from django.utils.translation import gettext_lazy
+
 from order.models import PaymentMethod
 from user_management.models import DeliveryAddress
 
 
 class DeliveryAddressForm(forms.ModelForm):
     payment_method = forms.ChoiceField(
-        label="Payment Method",
+        label=gettext_lazy("Payment Method"),
         choices=[(item.value, item.name.title()) for item in PaymentMethod],
         widget=forms.RadioSelect,
     )
@@ -20,35 +22,37 @@ class DeliveryAddressForm(forms.ModelForm):
         )
 
         labels = {
-            "postal_code": "Postal Code",
-            "city": "City",
-            "street": "Street",
-            "branch": "Nova Poshta Branch",
+            "postal_code": gettext_lazy("Postal Code"),
+            "city": gettext_lazy("City"),
+            "street": gettext_lazy("Street"),
+            "branch": gettext_lazy("Nova Poshta Branch"),
         }
 
         widgets = {
             "postal_code": forms.TextInput(
                 attrs={
                     "class": "form-control",
-                    "placeholder": "Postal code",
+                    "placeholder": gettext_lazy("Postal code"),
                 }
             ),
             "city": forms.TextInput(
                 attrs={
                     "class": "form-control",
-                    "placeholder": "City",
+                    "placeholder": gettext_lazy("City"),
                 }
             ),
             "street": forms.TextInput(
                 attrs={
                     "class": "form-control",
-                    "placeholder": "Street",
+                    "placeholder": gettext_lazy("Street"),
                 }
             ),
             "branch": forms.TextInput(
                 attrs={
                     "class": "form-control",
-                    "placeholder": "Nova Poshta branch (optional)",
+                    "placeholder": gettext_lazy(
+                        "Nova Poshta branch (optional)"
+                    ),
                 }
             ),
         }

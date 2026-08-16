@@ -1,12 +1,14 @@
 {% extends "base.html" %}
 
+{% load i18n %}
+
 {% block title %}
-Edit Feedback | BookStore
+{% trans "Edit Feedback" %} | BookStore
 {% endblock %}
 
 {% block content %}
 
-<h2>Edit Feedback</h2>
+<h2>{% trans "Edit Feedback" %}</h2>
 
 <div class="card mt-3">
     <div class="card-body">
@@ -19,12 +21,12 @@ Edit Feedback | BookStore
             {{ form.as_p }}
 
             <button type="submit" class="btn btn-dark">
-                Save Changes
+                {% trans "Save Changes" %}
             </button>
 
             <a href="{% url 'shop:book_detail' object.book.pk %}"
                class="btn btn-secondary">
-                Cancel
+                {% trans "Cancel" %}
             </a>
 
         </form>

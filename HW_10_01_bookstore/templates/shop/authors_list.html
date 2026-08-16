@@ -1,10 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}Authors | BookStore{% endblock %}
+{% load i18n %}
+
+{% block title %} {% trans "Authors"%} | BookStore{% endblock %}
 
 {% block content %}
 
-<h2>Authors</h2>
+<h2> {% trans "Authors"%}</h2>
 
 <form method="GET" class="mb-3 d-flex gap-2">
     <input
@@ -15,11 +17,11 @@
         value="{{ request.GET.q }}"
     >
     <button type="submit" class="btn btn-dark">
-        Search
+         {% trans "Search"%}
     </button>
     {% if request.GET.q %}
         <a href="?" class="btn btn-outline-danger">
-            ✕
+             {% trans "✕"%}
         </a>
     {% endif %}
 </form>
@@ -34,7 +36,7 @@
         </li>
     {% empty %}
         <li class="list-group-item text-muted">
-            No authors found
+             {% trans "No authors found"%}
         </li>
     {% endfor %}
 </ul>
@@ -46,7 +48,7 @@
             <li class="page-item">
                 <a class="page-link"
                    href="?q={{ request.GET.q }}&page={{ page_obj.previous_page_number }}">
-                    Previous
+                     {% trans "Previous"%}
                 </a>
             </li>
         {% endif %}
@@ -61,7 +63,7 @@
             <li class="page-item">
                 <a class="page-link"
                    href="?q={{ request.GET.q }}&page={{ page_obj.next_page_number }}">
-                    Next
+                     {% trans "Next"%}
                 </a>
             </li>
         {% endif %}
