@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block title %}{% trans "Home" %}{% endblock %}
+
+{% block content %}
+
+<h2>{% trans "Top Books" %}</h2>
+<ul class="list-group mb-4">
+    {% for book in top_books %}
+        <li class="list-group-item d-flex justify-content-between">
+            <a href="{% url 'shop:book_detail' book.pk %}"
+               class="title text-dark text-decoration-none">
+                {{ book.title }}
+            </a>
+
+            <span class="meta">
+                {{ book.avg_rating }}
+            </span>
+        </li>
+    {% empty %}
+        <li class="list-group-item">
+            {% trans "No books" %}
+        </li>
+    {% endfor %}
+</ul>
+
+<h2>{% trans "New Books" %}</h2>
+<ul class="list-group mb-4">
+    {% for book in new_books %}
+        <li class="list-group-item d-flex justify-content-between">
+
+            <a href="{% url 'shop:book_detail' book.pk %}"
+               class="title text-dark text-decoration-none">
+                {{ book.title }}
+            </a>
+
+            <span class="meta">
+                {{ book.publication_date|date:"d.m.Y" }}
+            </span>
+
+        </li>
+    {% empty %}
+        <li class="list-group-item">
+            {% trans "No books" %}
+        </li>
+    {% endfor %}
+</ul>
+
+<h2>{% trans "Popular Books" %}</h2>
+<ul class="list-group mb-4">
+    {% for book in popular_books %}
+        <li class="list-group-item d-flex justify-content-between">
+            <a href="{% url 'shop:book_detail' book.pk %}"
+               class="title text-dark text-decoration-none">
+                {{ book.title }}
+            </a>
+
+            <span class="meta">
+                {% if book.ratings_count %}
+                    {{ book.ratings_count }}
+                    {% blocktrans count count=book.ratings_count %}
+                        feedback
+                    {% plural %}
+                        feedbacks
+                    {% endblocktrans %}
+                {% else %}
+                    {% trans "No feedback yet" %}
+                {% endif %}
+            </span>
+        </li>
+    {% empty %}
+        <li class="list-group-item">
+            {% trans "No books" %}
+        </li>
+    {% endfor %}
+</ul>
+
+<h2>{% trans "Top Authors" %}</h2>
+<ul class="list-group">
+    {% for author in top_authors %}
+        <li class="list-group-item d-flex justify-content-between">
+            <a href="{% url 'shop:author_detail' author.pk %}"
+               class="title text-dark text-decoration-none">
+                {{ author.first_name }} {{ author.last_name }}
+            </a>
+
+            <span class="meta">
+                {{ author.books_count }}
+            </span>
+        </li>
+    {% empty %}
+        <li class="list-group-item">
+            {% trans "No authors" %}
+        </li>
+    {% endfor %}
+</ul>
+
+
+{% if user.is_authenticated %}
+
+<h2 class="mt-5">{% trans "Recently Viewed" %}</h2>
+
+<ul class="list-group mb-4">
+
+    {% for item in last_viewed %}
+
+        <li class="list-group-item">
+            <a href="{% url 'shop:book_detail' item.book.pk %}"
+               class="text-dark text-decoration-none">
+                {{ item.book.title }}
+            </a>
+        </li>
+
+    {% empty %}
+
+        <li class="list-group-item text-muted">
+            {% trans "You haven't viewed any books yet." %}
+        </li>
+
+    {% endfor %}
+
+</ul>
+
+{% endif %}
+
+{% endblock %}

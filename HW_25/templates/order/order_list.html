@@ -1,0 +1,48 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Order List | BookStore</title>
+    <link rel="stylesheet" href="{% static 'shop/css/style.css' %}">
+</head>
+
+<body>
+
+<header class="header">
+    <h1>BookStore</h1>
+
+    <nav class="nav">
+        <a href="{% url 'shop:main_page' %}">Home</a>
+        <a href="{% url 'shop:books_list' %}">Books</a>
+        <a href="{% url 'shop:authors_list' %}">Authors</a>
+        <a href="{% url 'order:order_list' %}">Orders</a>
+        <a href="{% url 'order:new_order' %}">New Order</a>
+    </nav>
+</header>
+
+<main class="container">
+
+    <section class="block">
+        <h2>Orders</h2>
+
+        <ul class="list">
+            {% for order in orders %}
+                <li>
+                    <span class="title">Order #{{ order.id }}</span>
+                    <span class="meta">{{ order.total_price }} UAH</span>
+                </li>
+            {% empty %}
+                <li class="empty">No orders yet</li>
+            {% endfor %}
+        </ul>
+
+    </section>
+
+</main>
+
+</body>
+
+</html>

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block title %}
+{% trans "Edit Feedback" %} | BookStore
+{% endblock %}
+
+{% block content %}
+
+<h2>{% trans "Edit Feedback" %}</h2>
+
+<div class="card mt-3">
+    <div class="card-body">
+
+        <h5>{{ object.book.title }}</h5>
+
+        <form method="post">
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <button type="submit" class="btn btn-dark">
+                {% trans "Save Changes" %}
+            </button>
+
+            <a href="{% url 'shop:book_detail' object.book.pk %}"
+               class="btn btn-secondary">
+                {% trans "Cancel" %}
+            </a>
+
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}

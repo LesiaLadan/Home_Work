@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block title %}{% trans "Cart" %} | BookStore{% endblock %}
+
+{% block content %}
+
+<h2>{% trans "Cart" %}</h2>
+
+{% if cart_data %}
+
+<table class="table table-striped align-middle">
+    <thead>
+        <tr>
+            <th>{% trans "Book" %}</th>
+            <th class="text-end">{% trans "Price" %}</th>
+            <th class="text-center">{% trans "Quantity" %}</th>
+            <th class="text-end">{% trans "Sum" %}</th>
+            <th class="text-center">{% trans "Action" %}</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+    {% for item in cart_data %}
+        <tr>
+
+            <td>
+                <a href="{% url 'shop:book_detail' item.book.id %}">
+                    {{ item.book.title }}
+                </a>
+            </td>
+
+            <td class="text-end">
+                {{ item.price }} {% trans "UAH" %}
+            </td>
+
+            <td class="text-center">
+                {{ item.quantity }}
+            </td>
+
+            <td class="text-end">
+                {{ item.subtotal }} {% trans "UAH" %}
+            </td>
+
+            <td class="text-center">
+                <form method="post"
+                      action="{% url 'order:remove_from_cart' item.book.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                        {% trans "Remove" %}
+                    </button>
+                </form>
+            </td>
+
+        </tr>
+    {% endfor %}
+
+    </tbody>
+
+    <tfoot>
+        <tr>
+            <th colspan="4" class="text-end">
+                {% trans "Total" %}:
+            </th>
+
+            <th class="text-end">
+                {{ total }} {% trans "UAH" %}
+            </th>
+        </tr>
+    </tfoot>
+
+</table>
+
+<div class="d-flex justify-content-end">
+
+    <a href="{% url 'order:checkout' %}"
+       class="btn btn-success">
+        {% trans "Proceed to Checkout" %}
+    </a>
+
+</div>
+
+{% else %}
+
+<div class="alert alert-info">
+    {% trans "Your cart is empty" %}
+</div>
+
+<a href="{% url 'shop:books_list' %}"
+   class="btn btn-dark">
+    {% trans "Continue shopping" %}
+</a>
+
+{% endif %}
+
+{% endblock %}

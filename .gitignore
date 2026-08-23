@@ -27,3 +27,5 @@ build/
 htmlcov/
 
 HW_10_01_bookstore/.env_docker
+HW_25/.env_docker
+HW_25/.env_local

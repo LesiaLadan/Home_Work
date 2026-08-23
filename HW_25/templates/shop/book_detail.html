@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+
+{% block title %}
+{{ book.title }} | BookStore
+{% endblock %}
+
+{% block content %}
+
+<h2>{{ book.title }}</h2>
+
+<div class="card mt-3">
+    <div class="card-body">
+
+        <p>
+            <strong>{% trans "ISBN:"%}</strong> {{ book.isbn }}
+        </p>
+
+        {% if perms.shop.view_wholesale_price %}
+            <p>
+                <strong>{% trans "Retail Price:"%}</strong>
+                {{ book.price }} {% trans "UAH"%}
+            </p>
+
+            <p>
+                <strong>{% trans "Wholesale Price:"%}</strong>
+                {{ book.wholesale_price }} {% trans "UAH"%}
+            </p>
+        {% else %}
+            <p>
+                <strong>{% trans "Price:"%}</strong>
+                {{ book.price }} {% trans "UAH"%}
+            </p>
+        {% endif %}
+        <p>
+            <strong>{% trans "Average Rating:"%}</strong>
+            {{ book.calculated_avg_rating }}
+        </p>
+
+        <p>
+            <strong>{% trans "Description:"%}</strong>
+        </p>
+
+        <p>
+            {{ book.description }}
+        </p>
+
+        {% if user.is_authenticated %}
+            <a href="{% url 'shop:add_feedback' book.pk %}"
+               class="btn btn-dark">
+                {% trans "Add Feedback"%}
+            </a>
+        {% else %}
+            <p class="text-muted mt-3">
+                {% trans "Login to leave feedback."%}
+            </p>
+        {% endif %}
+
+        {% if user.is_authenticated %}
+
+            <form method="post"
+                action="{% url 'order:add_to_cart' book.id %}"
+                class="d-inline">
+
+                {% csrf_token %}
+
+                <input type="hidden"
+                    name="next"
+                    value="{{ request.get_full_path }}">
+
+                <button type="submit"
+                        class="btn btn-dark btn-sm">
+                    {% trans "Add to Cart"%}
+                </button>
+
+            </form>
+
+        {% else %}
+
+            <span class="text-muted small">
+                {% trans "Login to order"%}
+            </span>
+
+        {% endif %}
+
+    </div>
+</div>
+
+<h3 class="mt-4">{% trans "Feedback"%}</h3>
+
+{% for rating in book.ratings.all %}
+
+    <div class="card mt-3">
+        <div class="card-body">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+                <strong>{{ rating.user.username }}</strong>
+
+                <span class="badge bg-dark">
+                    {{ rating.rating }}/5
+                </span>
+
+            </div>
+
+            {% if rating.feedback %}
+                <p class="mt-3 mb-3">
+                    {{ rating.feedback }}
+                </p>
+            {% endif %}
+
+            {% if user.is_authenticated and user == rating.user %}
+                <a href="{% url 'shop:update_feedback' rating.pk %}"
+                   class="btn btn-outline-dark btn-sm">
+                    {% trans "Edit Feedback"%}
+                </a>
+                <a href="{% url 'shop:delete_feedback' rating.pk %}"
+                    class="btn btn-outline-danger btn-sm">
+                    {% trans "Delete Feedback"%}
+                </a>
+            {% endif %}
+
+        </div>
+    </div>
+
+{% empty %}
+
+    <div class="alert alert-light border mt-3">
+        {% trans "There is no feedback yet"%}
+    </div>
+
+{% endfor %}
+
+<div class="mt-4">
+    <a href="{% url 'shop:books_list' %}"
+       class="btn btn-secondary">
+        {% trans "← Back to Books"%}
+    </a>
+</div>
+
+{% endblock %}

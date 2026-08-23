@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block title %} {% trans "Books"%} | BookStore{% endblock %}
+
+{% block content %}
+
+<h2>{% trans "Books"%}</h2>
+
+<form method="GET" class="mb-3 d-flex gap-2">
+    <input type="text"
+           name="q"
+           class="form-control"
+           placeholder="Search by book title or author..."
+           value="{{ request.GET.q }}">
+    <button type="submit" class="btn btn-dark">
+        {% trans "Search"%}
+    </button>
+    {% if request.GET.q %}
+        <a href="?" class="btn btn-outline-danger">
+            ✕
+        </a>
+    {% endif %}
+</form>
+
+
+<ul class="list-group">
+
+    {% for book in books %}
+        <li class="list-group-item">
+            <div class="row align-items-center">
+
+                <div class="col-md-7">
+                    <a class="text-decoration-none fw-semibold title"
+                       href="{% url 'shop:book_detail' book.pk %}">
+                        {{ book.title }}
+                    </a>
+
+                    <div class="small text-muted mt-1">
+                        {% for author in book.author.all %}
+                            <a href="{% url 'shop:author_detail' author.pk %}"
+                               class="text-decoration-none text-dark">
+                                {{ author }}
+                            </a>{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-md-2 text-md-end">
+
+                    {% if perms.shop.view_wholesale_price %}
+
+                        <div>
+                            <strong>{% trans "Retail:"%}</strong>
+                            {{ book.price }} {% trans "UAH"%}
+                        </div>
+
+                        <div class="small text-muted">
+                            <strong>{% trans "Wholesale:"%}</strong>
+                            {{ book.wholesale_price }} {% trans "UAH"%}
+                        </div>
+
+                    {% else %}
+
+                        <div>
+                            <strong>{% trans "Price"%}:</strong>
+                            {{ book.price }} {% trans "UAH"%}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+                <div class="col-md-3 text-md-end mt-2 mt-md-0">
+
+
+                    {% if user.is_authenticated %}
+
+                        <form method="post"
+                            action="{% url 'order:add_to_cart' book.id %}"
+                            class="d-inline">
+
+                            {% csrf_token %}
+
+                            <input type="hidden"
+                                name="next"
+                                value="{{ request.get_full_path }}">
+
+                            <button type="submit"
+                                    class="btn btn-dark btn-sm">
+                                {% trans "Add to Cart"%}
+                            </button>
+
+                        </form>
+
+                    {% else %}
+
+                        <span class="text-muted small">
+                            {% trans "Login to order"%}
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+        </li>
+
+    {% empty %}
+        <li class="list-group-item text-muted">
+            {% trans "No books found"%}
+        </li>
+    {% endfor %}
+
+</ul>
+
+<nav class="mt-3">
+    <ul class="pagination">
+
+        {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link"
+                   href="?q={{ request.GET.q }}&page={{ page_obj.previous_page_number }}">
+                    {% trans "Previous"%}
+                </a>
+            </li>
+        {% endif %}
+
+        <li class="page-item active">
+            <span class="page-link">
+                {{ page_obj.number }}
+            </span>
+        </li>
+
+        {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link"
+                   href="?q={{ request.GET.q }}&page={{ page_obj.next_page_number }}">
+                    {% trans "Next"%}
+                </a>
+            </li>
+        {% endif %}
+
+    </ul>
+</nav>
+
+
+{% endblock %}

@@ -1,0 +1,57 @@
+
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    # environment:
+    #   - DB_HOST=db
+    #   - DB_PORT=5432
+    env_file:
+      - .env_docker
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - .:/app
+    command: ["sh", "docker-entrypoint.sh"]
+
+  # web2:
+  #   build: .
+  #   ports:
+  #     - "8001:8000"
+  #   env_file:
+  #     - .env_docker
+  #   depends_on:
+  #     - db
+  #   command: ["python", "endpoint2.py"]
+
+  db:
+    image: postgres:16-alpine
+    env_file:
+      - .env_docker
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U book_store_user -d book_store_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "5432:5432"
+    hostname: db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  redis:
+    image: redis:7-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    ports:
+       - "6379:6379"
+volumes:
+  postgres_data:
+
+          
