@@ -22,9 +22,10 @@ from django.conf.urls.i18n import i18n_patterns
 
 urlpatterns = [
     path("i18n/", include("django.conf.urls.i18n")),
+    path("admin/", admin.site.urls),
+    path("api/", include("api.urls")),
 ]
 urlpatterns += [
-    path("admin/", admin.site.urls),
     path("", include("shop.urls")),
     path("orders/", include("order.urls")),
     path("usermanagement/", include("user_management.urls")),
