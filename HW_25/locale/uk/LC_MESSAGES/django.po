@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-09 12:55+0000\n"
+"POT-Creation-Date: 2026-08-30 15:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Ukrainian\n"
@@ -184,40 +184,68 @@ msgstr "Може переглядати оптову ціну"
 msgid "User"
 msgstr "Користувач"
 
-#: templates/base.html:23 templates/base.html:33
-#: templates/shop/authors_list.html:5 templates/shop/authors_list.html:9
-msgid "Authors"
-msgstr "Автори"
+#: templates/404.html:6
+msgid "Page not found"
+msgstr "Сторінку не знайдено"
 
-#: templates/base.html:28 templates/shop/author_detail.html:31
+#: templates/404.html:14
+msgid "This page doesn't exist."
+msgstr "Ця сторінка не існує"
+
+#: templates/404.html:15 templates/500.html:13
+#, fuzzy
+#| msgid "Back to Categories"
+msgid "Back to home"
+msgstr "На головну"
+
+#: templates/500.html:6
+msgid "Server error"
+msgstr "Помилка серверу"
+
+#: templates/500.html:12
+msgid "Something went wrong on our side. We already know about it."
+msgstr "Щось пішло не так, але з нашої вини. Ми вже про це знаємо."
+
+#: templates/base.html:25
+#, fuzzy
+#| msgid "Book"
+msgid "BookStore"
+msgstr "Книга"
+
+#: templates/base.html:30 templates/shop/author_detail.html:31
 #: templates/shop/books_list.html:5 templates/shop/books_list.html:9
 #: templates/shop/category_detail.html:20
 msgid "Books"
 msgstr "Книги"
 
-#: templates/base.html:38 templates/shop/categories_list.html:5
+#: templates/base.html:35 templates/shop/authors_list.html:5
+#: templates/shop/authors_list.html:9
+msgid "Authors"
+msgstr "Автори"
+
+#: templates/base.html:40 templates/shop/categories_list.html:5
 #: templates/shop/categories_list.html:9
 msgid "Categories"
 msgstr "Категорії"
 
-#: templates/base.html:50 templates/order/cart.html:5
+#: templates/base.html:52 templates/order/cart.html:5
 #: templates/order/cart.html:9
 msgid "Cart"
 msgstr "Кошик"
 
-#: templates/base.html:59
+#: templates/base.html:61
 msgid "Welcome"
 msgstr "Вітаємо"
 
-#: templates/base.html:66
+#: templates/base.html:68
 msgid "Logout"
 msgstr "Вийти"
 
-#: templates/base.html:74 templates/user_management/register.html:6
+#: templates/base.html:76 templates/user_management/register.html:6
 msgid "Registration"
 msgstr "Реєстрація"
 
-#: templates/base.html:79 templates/user_management/login.html:6
+#: templates/base.html:81 templates/user_management/login.html:6
 #: templates/user_management/login.html:20
 #: templates/user_management/login.html:54
 #: templates/user_management/register.html:64
@@ -425,28 +453,28 @@ msgstr "Ви впевнені, що хочете видалити свій ві�
 msgid "Delete"
 msgstr "Видалити"
 
-#: templates/shop/main_page.html:5
+#: templates/shop/main_page.html:6
 msgid "Home"
 msgstr "Головна"
 
-#: templates/shop/main_page.html:9
+#: templates/shop/main_page.html:11
 msgid "Top Books"
 msgstr "Найкращі книги"
 
-#: templates/shop/main_page.html:24 templates/shop/main_page.html:46
-#: templates/shop/main_page.html:75
+#: templates/shop/main_page.html:26 templates/shop/main_page.html:50
+#: templates/shop/main_page.html:81
 msgid "No books"
 msgstr "Немає книг"
 
-#: templates/shop/main_page.html:29
+#: templates/shop/main_page.html:33
 msgid "New Books"
 msgstr "Нові книги"
 
-#: templates/shop/main_page.html:51
+#: templates/shop/main_page.html:57
 msgid "Popular Books"
 msgstr "Популярні книги"
 
-#: templates/shop/main_page.html:63
+#: templates/shop/main_page.html:69
 msgid ""
 "\n"
 "                        feedback\n"
@@ -455,28 +483,40 @@ msgid_plural ""
 "\n"
 "                        feedbacks\n"
 "                    "
-msgstr[0] "відгук"
-msgstr[1] "відгуки"
-msgstr[2] "відгуків"
-msgstr[3] "відгуку"
+msgstr[0] ""
+"\n"
+"                        відгук\n"
+"                    "
+msgstr[1] ""
+"\n"
+"                        відгуки\n"
+"                    "
+msgstr[2] ""
+"\n"
+"                        відгуків\n"
+"                    "
+msgstr[3] ""
+"\n"
+"                        відгуку\n"
+"                    "
 
-#: templates/shop/main_page.html:69
+#: templates/shop/main_page.html:75
 msgid "No feedback yet"
 msgstr "Відгуків ще немає"
 
-#: templates/shop/main_page.html:80
+#: templates/shop/main_page.html:88
 msgid "Top Authors"
 msgstr "Найкращі автори"
 
-#: templates/shop/main_page.html:95
+#: templates/shop/main_page.html:103
 msgid "No authors"
 msgstr "Немає авторів"
 
-#: templates/shop/main_page.html:103
+#: templates/shop/main_page.html:112
 msgid "Recently Viewed"
 msgstr "Нещодавно переглянуті"
 
-#: templates/shop/main_page.html:119
+#: templates/shop/main_page.html:128
 msgid "You haven't viewed any books yet."
 msgstr "Ви ще не переглядали жодної книги."
 

@@ -4,7 +4,6 @@ import structlog
 import stripe
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.mail import send_mail
 from django.db import transaction
 from django.db.models import F
 from django.http import HttpRequest, HttpResponse
@@ -14,7 +13,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
 from asgiref.sync import sync_to_async
 from django.conf import settings
-
+from django.utils.http import url_has_allowed_host_and_scheme
+from order.tasks import send_order_confirmation_email
 from shop.models import Book
 from user_management.models import DeliveryAddress, User
 from .forms import DeliveryAddressForm
@@ -61,7 +61,14 @@ class AddToCartView(LoginRequiredMixin, View):
     def post(self, request: HttpRequest, book_id: int) -> HttpResponse:
         Cart(request).add(book_id)
 
-        return redirect(request.POST.get("next", "order:cart"))
+        next_url = request.POST.get("next")
+
+        if next_url and url_has_allowed_host_and_scheme(
+            next_url, allowed_hosts={request.get_host()}, require_https=request.is_secure()
+        ):
+            return redirect(next_url)
+
+        return redirect("order:cart")
 
 
 class CartView(LoginRequiredMixin, TemplateView):
@@ -308,19 +315,12 @@ class PlaceOrderView(LoginRequiredMixin, View):
         user_name = request.user.first_name or request.user.username
 
         try:
-            send_mail(
-                subject=f"Order #{order.pk} created",
-                message=(
-                    f"Hello, {user_name}!\n\n"
-                    f"Thank you for your order.\n\n"
-                    f"Order number: {order.pk}\n"
-                    f"Total amount: {order.total_price} UAH\n"
-                    f"Payment method: {order.payment_method}\n\n"
-                    f"We will notify you when your order is processed."
-                ),
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[request.user.email],
-                fail_silently=False,
+            send_order_confirmation_email.delay(
+                order.pk,
+                user_name,
+                request.user.email,
+                str(order.total_price),
+                order.payment_method,
             )
         except Exception:
             logger.exception(

@@ -10,3 +10,9 @@ DATABASES = {
 }
 
 STRIPE_SECRET_KEY = "sk_test_fake"
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.dummy.DummyCache",
+    }
+}

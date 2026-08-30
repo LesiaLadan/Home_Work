@@ -20,10 +20,17 @@ from django.urls import include, path
 from debug_toolbar.toolbar import debug_toolbar_urls
 from django.conf.urls.i18n import i18n_patterns
 
+
+def trigger_error(request):
+    division_by_zero = 1 / 0
+    return division_by_zero
+
+
 urlpatterns = [
     path("i18n/", include("django.conf.urls.i18n")),
     path("admin/", admin.site.urls),
     path("api/", include("api.urls")),
+    path("sentry-debug/", trigger_error),
 ]
 urlpatterns += [
     path("", include("shop.urls")),

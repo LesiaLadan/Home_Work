@@ -17,6 +17,9 @@ from django.shortcuts import get_object_or_404, render
 from shop.models import Author, Book, Category, Rating
 from shop.forms import RatingForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from django.core.cache import cache
 
 from user_management.models import LastViewedBooks, User
 import structlog
@@ -157,7 +160,14 @@ class BookDetailView(DetailView):
 
     def get_object(self, queryset=None):
         """Fetch the book and log that its detail page was opened."""
-        book = super().get_object(queryset)
+        
+        cache_key = f"book_detail_{self.kwargs['pk']}"
+        book = cache.get(cache_key)
+
+        if book is None:
+            book = super().get_object(queryset)
+            cache.set(cache_key, book, 60 * 15)
+
         logger.info(
             "Book detail opened",
             book_id=book.id,
@@ -167,6 +177,7 @@ class BookDetailView(DetailView):
         return book
 
 
+@method_decorator(cache_page(60 * 15), name="dispatch")
 class AuthorsListView(ListView):
     """Paginated list of authors, optionally filtered by a name search query."""
 
@@ -190,7 +201,7 @@ class AuthorsListView(ListView):
             )
         return queryset
 
-
+@method_decorator(cache_page(60 * 15), name="dispatch")
 class AuthorDetailView(DetailView):
     """Single author's detail page."""
 
@@ -209,6 +220,7 @@ class AuthorDetailView(DetailView):
         return author
 
 
+@method_decorator(cache_page(60 * 15), name="dispatch")
 class CategoriesListView(ListView):
     """List of all book categories, optionally filtered by a name search query."""
 

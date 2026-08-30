@@ -175,7 +175,7 @@ def test_place_order_creates_order(client):
         "payment_method": PaymentMethod.CASH.value,
     }
 
-    with patch("order.views.send_mail") as mock_send_mail:
+    with patch("order.views.send_order_confirmation_email.delay") as mock_send_email:
         response = client.post(
             reverse("order:place_order"),
             data,
@@ -199,4 +199,4 @@ def test_place_order_creates_order(client):
     book.refresh_from_db()
     assert book.in_stock == 8
 
-    mock_send_mail.assert_called_once()
+    mock_send_email.assert_called_once()
