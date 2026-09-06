@@ -5,6 +5,7 @@ from django.http import HttpResponse
 
 class RateLimitMiddleware:
     """Limits the number of requests from a single IP address"""
+
     """Limit is set to 10 requests per minute to demonstrate rate limiting funcionality."""
     REQUEST_LIMIT = 100
     TIME_WINDOW = 60
@@ -23,7 +24,11 @@ class RateLimitMiddleware:
         self.requests[ip] = [t for t in self.requests[ip] if now - t < self.TIME_WINDOW]
 
         if len(self.requests[ip]) >= self.REQUEST_LIMIT:
-            return HttpResponse("Too many requests. Please try again later.", status=429, content_type="text/plain")
+            return HttpResponse(
+                "Too many requests. Please try again later.",
+                status=429,
+                content_type="text/plain",
+            )
 
         self.requests[ip].append(now)
 

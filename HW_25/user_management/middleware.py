@@ -4,6 +4,7 @@ from shop.models import Book
 
 class LastViewedBooksMiddleware:
     """Tracks the last viewed books for authenticated users"""
+
     def __init__(self, get_response):
         self.get_response = get_response
 

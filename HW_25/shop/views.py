@@ -160,7 +160,7 @@ class BookDetailView(DetailView):
 
     def get_object(self, queryset=None):
         """Fetch the book and log that its detail page was opened."""
-        
+
         cache_key = f"book_detail_{self.kwargs['pk']}"
         book = cache.get(cache_key)
 
@@ -192,7 +192,8 @@ class AuthorsListView(ListView):
         author_query = self.request.GET.get("q", "")
         if author_query:
             queryset = queryset.filter(
-                Q(first_name__icontains=author_query) | Q(last_name__icontains=author_query)
+                Q(first_name__icontains=author_query)
+                | Q(last_name__icontains=author_query)
             )
             logger.info(
                 "Found authors matching query",
@@ -200,6 +201,7 @@ class AuthorsListView(ListView):
                 query=author_query,
             )
         return queryset
+
 
 @method_decorator(cache_page(60 * 15), name="dispatch")
 class AuthorDetailView(DetailView):

@@ -1,5 +1,5 @@
 from rest_framework import mixins, status, viewsets
-from rest_framework.decorators import APIView, action
+from rest_framework.decorators import APIView
 from rest_framework.permissions import (
     IsAdminUser,
     IsAuthenticated,
@@ -73,10 +73,7 @@ def cart_data(request):
     total = 0
 
     for book in cart.get_books():
-        if (
-            request.user.has_perm("shop.view_wholesale_price")
-            and book.wholesale_price
-        ):
+        if request.user.has_perm("shop.view_wholesale_price") and book.wholesale_price:
             price = book.wholesale_price
         else:
             price = book.price

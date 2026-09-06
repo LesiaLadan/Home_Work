@@ -50,9 +50,7 @@ class DeliveryAddressForm(forms.ModelForm):
             "branch": forms.TextInput(
                 attrs={
                     "class": "form-control",
-                    "placeholder": gettext_lazy(
-                        "Nova Poshta branch (optional)"
-                    ),
+                    "placeholder": gettext_lazy("Nova Poshta branch (optional)"),
                 }
             ),
         }

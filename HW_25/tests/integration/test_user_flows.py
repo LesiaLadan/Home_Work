@@ -267,8 +267,8 @@ def test_delete_book_from_cart(client):
 
 
 @pytest.mark.django_db
-@patch("order.views.send_mail")
-def test_create_order(mock_send_mail, client):
+@patch("order.views.send_order_confirmation_email")
+def test_create_order(mock_send_order_confirmation_email, client):
     user = UserFactory()
     user.set_password("StrongPassword123!")
     user.save()
@@ -314,7 +314,7 @@ def test_create_order(mock_send_mail, client):
     book.refresh_from_db()
     assert book.in_stock == 9
 
-    mock_send_mail.assert_called_once()
+    mock_send_order_confirmation_email.delay.assert_called_once()
 
     response = client.get(reverse("order:cart"))
 

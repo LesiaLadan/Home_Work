@@ -7,7 +7,15 @@ from rest_framework_simplejwt.views import (
     TokenVerifyView,
 )
 
-from .views import BookViewSet, CartAddView, CartClearView, CartRemoveView, CartView, CategoryViewSet, OrderViewSet
+from .views import (
+    BookViewSet,
+    CartAddView,
+    CartClearView,
+    CartRemoveView,
+    CartView,
+    CategoryViewSet,
+    OrderViewSet,
+)
 
 router = DefaultRouter()
 router.register("books", BookViewSet, basename="book")

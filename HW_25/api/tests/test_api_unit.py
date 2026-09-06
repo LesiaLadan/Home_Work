@@ -177,8 +177,6 @@ def test_book_create_not_allowed_for_user(api_client):
 def test_book_create_allowed_for_admin(api_client):
     admin = UserFactory(is_staff=True, is_superuser=True)
     api_client.force_authenticate(user=admin)
-    author = AuthorFactory()
-    category = CategoryFactory()
     publisher = PublisherFactory()
 
     response = api_client.post(

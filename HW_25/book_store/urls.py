@@ -18,7 +18,6 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from debug_toolbar.toolbar import debug_toolbar_urls
-from django.conf.urls.i18n import i18n_patterns
 
 
 def trigger_error(request):

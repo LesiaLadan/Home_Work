@@ -2,7 +2,6 @@ import pytest
 
 from shop.forms import RatingForm
 from user_management.forms import UserRegisterForm, UserLoginForm
-from order.forms import DeliveryAddressForm
 
 
 def test_rating_form_valid():

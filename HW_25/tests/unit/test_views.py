@@ -4,7 +4,7 @@ import pytest
 from django.urls import reverse
 from order.models import Order, OrderDetails, PaymentMethod, PaymentStatus, OrderStatus
 from tests.factories import BookFactory, UserFactory
-from unittest.mock import patch, Mock
+from unittest.mock import patch
 
 
 @pytest.mark.django_db

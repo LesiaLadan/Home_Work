@@ -64,7 +64,9 @@ class AddToCartView(LoginRequiredMixin, View):
         next_url = request.POST.get("next")
 
         if next_url and url_has_allowed_host_and_scheme(
-            next_url, allowed_hosts={request.get_host()}, require_https=request.is_secure()
+            next_url,
+            allowed_hosts={request.get_host()},
+            require_https=request.is_secure(),
         ):
             return redirect(next_url)
 
@@ -454,9 +456,7 @@ async def stripe_webhook(request: HttpRequest) -> HttpResponse:
         )
     except ValueError as exc:
         if not settings.STRIPE_WEBHOOK_SECRET:
-            logger.error(
-                "Stripe webhook secret is not configured", error=str(exc)
-            )
+            logger.error("Stripe webhook secret is not configured", error=str(exc))
         else:
             logger.warning(
                 "Stripe webhook signature verification failed", error=str(exc)

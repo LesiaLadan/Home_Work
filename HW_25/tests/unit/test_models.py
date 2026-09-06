@@ -372,9 +372,7 @@ def test_delivery_address_str():
         city="Kyiv", street="Khreshchatyk", postal_code="01001"
     )
 
-    assert str(address) == (
-        f"{address.owner.username} - Kyiv, Khreshchatyk, 01001"
-    )
+    assert str(address) == (f"{address.owner.username} - Kyiv, Khreshchatyk, 01001")
 
 
 # Generated with AI, reviewed and modified
@@ -444,5 +442,3 @@ def test_last_viewed_books_default_ordering_is_most_recent_first():
     ordered = list(LastViewedBooks.objects.filter(owner=user))
 
     assert ordered == [newer, older]
-
-

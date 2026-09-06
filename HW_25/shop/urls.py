@@ -1,7 +1,17 @@
 from django.urls import path
 
-from order.views import OrderSuccessView
-from .views import AuthorDetailView, AuthorsListView, CategoriesListView, CategoryBooksListView, DeleteFeedbackView, MainPageView, BooksListView, BookDetailView, AddFeedbackView, UpdateFeedbackView
+from .views import (
+    AuthorDetailView,
+    AuthorsListView,
+    CategoriesListView,
+    CategoryBooksListView,
+    DeleteFeedbackView,
+    MainPageView,
+    BooksListView,
+    BookDetailView,
+    AddFeedbackView,
+    UpdateFeedbackView,
+)
 
 app_name = "shop"
 
@@ -14,6 +24,12 @@ urlpatterns = [
     path("categories/", CategoriesListView.as_view(), name="categories_list"),
     path("category/<int:pk>/", CategoryBooksListView.as_view(), name="category_detail"),
     path("add_feedback/<int:pk>/", AddFeedbackView.as_view(), name="add_feedback"),
-    path("feedback/<int:pk>/edit/", UpdateFeedbackView.as_view(), name="update_feedback"),
-    path("feedback/<int:pk>/delete/", DeleteFeedbackView.as_view(), name="delete_feedback"),
+    path(
+        "feedback/<int:pk>/edit/", UpdateFeedbackView.as_view(), name="update_feedback"
+    ),
+    path(
+        "feedback/<int:pk>/delete/",
+        DeleteFeedbackView.as_view(),
+        name="delete_feedback",
+    ),
 ]

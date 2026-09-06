@@ -1,0 +1,7 @@
+[flake8]
+max-line-length = 88
+extend-ignore = E203, E501, W503
+exclude = .venv,migrations,htmlcov,staticfiles,__pycache__,.git
+per-file-ignores =
+    book_store/test_settings.py:F401,F403
+    shop/apps.py:F401

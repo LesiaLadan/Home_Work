@@ -12,12 +12,23 @@ class BookFilter(django_filters.FilterSet):
 
     class Meta:
         model = Book
-        fields = ["category", "author", "language", "in_stock", "price_min", "price_max"]
+        fields = [
+            "category",
+            "author",
+            "language",
+            "in_stock",
+            "price_min",
+            "price_max",
+        ]
 
 
 class OrderFilter(django_filters.FilterSet):
-    order_date_after = django_filters.DateFilter(field_name="order_date", lookup_expr="gte")
-    order_date_before = django_filters.DateFilter(field_name="order_date", lookup_expr="lte")
+    order_date_after = django_filters.DateFilter(
+        field_name="order_date", lookup_expr="gte"
+    )
+    order_date_before = django_filters.DateFilter(
+        field_name="order_date", lookup_expr="lte"
+    )
 
     class Meta:
         model = Order
