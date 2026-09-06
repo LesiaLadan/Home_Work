@@ -8,6 +8,13 @@ from unittest.mock import patch
 
 
 @pytest.mark.django_db
+def test_main_page_loads(client):
+    response = client.get(reverse("shop:main_page"))
+
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
 def test_registration_page_loads(client):
     response = client.get(reverse("user_management:register"))
 
