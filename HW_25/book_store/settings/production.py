@@ -35,3 +35,15 @@ if USE_HTTPS:
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_REFERRER_POLICY = "same-origin"
 X_FRAME_OPTIONS = "DENY"
+
+# Serve static files straight from gunicorn via WhiteNoise, with
+# hashed filenames and gzip/brotli compression, instead of Django's
+# plain filesystem storage used in development.
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}

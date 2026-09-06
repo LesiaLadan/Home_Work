@@ -1,5 +1,8 @@
 # Book Store
 
+[![CI](https://github.com/LesiaLadan/Home_Work/actions/workflows/django.yml/badge.svg)](https://github.com/LesiaLadan/Home_Work/actions/workflows/django.yml)
+[![codecov](https://codecov.io/gh/LesiaLadan/Home_Work/branch/main/graph/badge.svg?flag=hw25)](https://codecov.io/gh/LesiaLadan/Home_Work)
+
 A Django online bookstore application: a catalog of books/authors/categories, a shopping cart and checkout with **Stripe** payment, user management (registration/login/delivery addresses), and book ratings/reviews. Logging is structured, via **structlog** (+ `django-structlog`).
 
 ## Stack and project structure

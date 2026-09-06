@@ -19,6 +19,8 @@ from django.contrib import admin
 from django.urls import include, path
 from debug_toolbar.toolbar import debug_toolbar_urls
 
+from .views import health_check
+
 
 def trigger_error(request):
     division_by_zero = 1 / 0
@@ -26,6 +28,7 @@ def trigger_error(request):
 
 
 urlpatterns = [
+    path("health/", health_check, name="health_check"),
     path("i18n/", include("django.conf.urls.i18n")),
     path("admin/", admin.site.urls),
     path("api/", include("api.urls")),
