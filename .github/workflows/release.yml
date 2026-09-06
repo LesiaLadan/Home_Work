@@ -9,6 +9,10 @@ jobs:
   docker:
     name: Build and push release image
     runs-on: ubuntu-latest
+    # Requires a "release" environment configured in the repo
+    # (Settings -> Environments -> New environment -> Required
+    # reviewers) - the job pauses here until someone approves it.
+    environment: release
     steps:
       - uses: actions/checkout@v4
 
