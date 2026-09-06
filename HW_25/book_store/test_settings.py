@@ -1,5 +1,5 @@
-from .settings import *
-from book_store.settings import BASE_DIR
+from book_store.settings.development import *  # noqa: F401,F403
+from book_store.settings.base import BASE_DIR
 
 DATABASES = {
     "default": {

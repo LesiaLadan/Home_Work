@@ -3,7 +3,7 @@ import enum
 from django.db import models
 from django.utils.translation import gettext_lazy
 
-from book_store import settings
+from django.conf import settings
 
 
 class OrderDetails(models.Model):

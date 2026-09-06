@@ -8,25 +8,14 @@ from sentry_sdk.integrations.django import DjangoIntegration
 from sentry_sdk.integrations.celery import CeleryIntegration
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+# base.py lives at <project>/book_store/settings/base.py, so the project
+# root is three levels up.
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
-
-
-SECRET_KEY = os.environ.get(
-    "SECRET_KEY", "qu-lr0jn+g0+i23%=9o5%v)78w)!pnrjb1g)ur=l_5h^4pg#-$"
-)
-
-
-DEBUG = os.environ.get("DEBUG", "True") == "True"
-
-ALLOWED_HOSTS = (
-    os.environ.get("ALLOWED_HOSTS", "").split(",")
-    if os.environ.get("ALLOWED_HOSTS")
-    else []
-)
+# Settings shared by every environment. Environment-specific values
+# (DEBUG, ALLOWED_HOSTS, SECRET_KEY, security headers, ...) live in
+# development.py / production.py.
 
 # Application definition
 
@@ -89,13 +78,6 @@ WSGI_APPLICATION = "book_store.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
-
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
-#     }
-# }
 
 DATABASES = {
     "default": {
@@ -161,7 +143,6 @@ LOGIN_URL = "user_management:login"
 
 
 INTERNAL_IPS = ["127.0.0.1"]
-SESSION_COOKIE_SECURE = False
 
 
 LOGGING = {
@@ -273,10 +254,9 @@ SPECTACULAR_SETTINGS = {
     "VERSION": "1.0.0",
 }
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-]
+CORS_ALLOWED_ORIGINS = os.environ.get(
+    "CORS_ALLOWED_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000"
+).split(",")
 
 CACHES = {
     "default": {
