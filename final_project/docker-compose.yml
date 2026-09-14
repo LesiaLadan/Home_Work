@@ -1,0 +1,160 @@
+services:
+  store-web:
+    build: ./store_api
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./store_api/.env_docker
+    environment:
+      - DB_HOST=store-db
+      - REDIS_HOST=store-redis
+    depends_on:
+      store-db:
+        condition: service_healthy
+      store-redis:
+        condition: service_healthy
+    volumes:
+      - ./store_api:/app
+    command: ["sh", "docker-entrypoint.sh"]
+
+  store-db:
+    image: postgres:16-alpine
+    env_file:
+      - ./store_api/.env_docker
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U book_store_user -d book_store_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - store_postgres_data:/var/lib/postgresql/data
+
+  store-redis:
+    image: redis:7-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  store-celery:
+    build: ./store_api
+    command: celery -A book_store worker --loglevel=info
+    env_file:
+      - ./store_api/.env_docker
+    environment:
+      - DB_HOST=store-db
+      - REDIS_HOST=store-redis
+    depends_on:
+      # Wait for store-web, not just store-db - store-web only reports
+      # healthy once its entrypoint has finished running `migrate`.
+      # Otherwise celery-beat can fire a task before the tables exist.
+      store-web:
+        condition: service_healthy
+      store-db:
+        condition: service_healthy
+      store-redis:
+        condition: service_healthy
+    volumes:
+      - ./store_api:/app
+
+  store-celery-beat:
+    build: ./store_api
+    command: celery -A book_store beat --loglevel=info
+    env_file:
+      - ./store_api/.env_docker
+    environment:
+      - DB_HOST=store-db
+      - REDIS_HOST=store-redis
+    depends_on:
+      store-web:
+        condition: service_healthy
+      store-db:
+        condition: service_healthy
+      store-redis:
+        condition: service_healthy
+    volumes:
+      - ./store_api:/app
+
+  stock-web:
+    build: ./stock_api
+    ports:
+      - "8001:8000"
+    env_file:
+      - ./stock_api/.env_docker
+    environment:
+      - DB_HOST=stock-db
+      - REDIS_HOST=stock-redis
+      # store-web talks to this container using the Docker service name,
+      # so Django's Host-header check must allow it too.
+      - ALLOWED_HOSTS=localhost,127.0.0.1,stock-web
+    depends_on:
+      stock-db:
+        condition: service_healthy
+      stock-redis:
+        condition: service_healthy
+    volumes:
+      - ./stock_api:/app
+    command: ["sh", "docker-entrypoint.sh"]
+
+  stock-db:
+    image: postgres:16-alpine
+    env_file:
+      - ./stock_api/.env_docker
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U stock_user -d stock_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - stock_postgres_data:/var/lib/postgresql/data
+
+  stock-redis:
+    image: redis:7-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  stock-celery:
+    build: ./stock_api
+    command: celery -A stock_service worker --loglevel=info
+    env_file:
+      - ./stock_api/.env_docker
+    environment:
+      - DB_HOST=stock-db
+      - REDIS_HOST=stock-redis
+    depends_on:
+      # Same reasoning as store-celery above: wait for stock-web's
+      # migrations, not just for stock-db accepting connections.
+      stock-web:
+        condition: service_healthy
+      stock-db:
+        condition: service_healthy
+      stock-redis:
+        condition: service_healthy
+    volumes:
+      - ./stock_api:/app
+
+  stock-celery-beat:
+    build: ./stock_api
+    command: celery -A stock_service beat --loglevel=info
+    env_file:
+      - ./stock_api/.env_docker
+    environment:
+      - DB_HOST=stock-db
+      - REDIS_HOST=stock-redis
+    depends_on:
+      stock-web:
+        condition: service_healthy
+      stock-db:
+        condition: service_healthy
+      stock-redis:
+        condition: service_healthy
+    volumes:
+      - ./stock_api:/app
+
+volumes:
+  store_postgres_data:
+  stock_postgres_data:

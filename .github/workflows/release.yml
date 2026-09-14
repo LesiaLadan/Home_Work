@@ -1,4 +1,4 @@
-name: HW_25 Release
+name: store_api Release
 
 on:
   push:
@@ -32,10 +32,10 @@ jobs:
       - name: Build and push image
         uses: docker/build-push-action@v6
         with:
-          context: HW_25
+          context: final_project/store_api
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/hw25-bookstore:${{ steps.tag.outputs.version }}
-            ${{ secrets.DOCKERHUB_USERNAME }}/hw25-bookstore:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/store-api-bookstore:${{ steps.tag.outputs.version }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/store-api-bookstore:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max

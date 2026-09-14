@@ -1,21 +1,21 @@
-name: HW_25 Book Store CI/CD
+name: store_api Book Store CI/CD
 
 on:
   push:
     branches: [main]
     paths:
-      - "HW_25/**"
+      - "final_project/store_api/**"
       - ".github/workflows/django.yml"
   pull_request:
     branches: [main]
     paths:
-      - "HW_25/**"
+      - "final_project/store_api/**"
       - ".github/workflows/django.yml"
   workflow_dispatch:
 
 defaults:
   run:
-    working-directory: HW_25
+    working-directory: final_project/store_api
 
 env:
   PYTHON_VERSION: "3.12"
@@ -32,7 +32,7 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: "pip"
-          cache-dependency-path: HW_25/requirements-dev.txt
+          cache-dependency-path: final_project/store_api/requirements-dev.txt
 
       - name: Install dev dependencies
         run: pip install -r requirements-dev.txt
@@ -51,7 +51,7 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: "pip"
-          cache-dependency-path: HW_25/requirements-dev.txt
+          cache-dependency-path: final_project/store_api/requirements-dev.txt
 
       - name: Install dev dependencies
         run: pip install -r requirements-dev.txt
@@ -70,7 +70,7 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: "pip"
-          cache-dependency-path: HW_25/requirements-dev.txt
+          cache-dependency-path: final_project/store_api/requirements-dev.txt
 
       - name: Install dependencies
         run: pip install -r requirements-dev.txt
@@ -86,15 +86,15 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report
-          path: HW_25/coverage.xml
+          path: final_project/store_api/coverage.xml
 
       - name: Upload coverage to Codecov
         if: always()
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: HW_25/coverage.xml
-          flags: hw25
+          files: final_project/store_api/coverage.xml
+          flags: store-api
           fail_ci_if_error: false
 
   docker:
@@ -117,10 +117,10 @@ jobs:
       - name: Build and push image
         uses: docker/build-push-action@v6
         with:
-          context: HW_25
+          context: final_project/store_api
           push: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/hw25-bookstore:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/hw25-bookstore:${{ github.sha }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/store-api-bookstore:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/store-api-bookstore:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
