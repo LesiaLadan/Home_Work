@@ -1,8 +1,8 @@
 import os
 
-from .base import *  # noqa: F401,F403
+from .base import *
 
-# Settings used for local development.
+# Settings used for local development
 
 SECRET_KEY = os.environ.get(
     "SECRET_KEY", "dev-only-secret-key-do-not-use-in-production"

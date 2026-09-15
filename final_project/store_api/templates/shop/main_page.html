@@ -7,7 +7,7 @@
 
 {% block content %}
 
-{% cache 900 top_books_fragment %}
+{% cache 900 top_books_fragment LANGUAGE_CODE %}
 <h2>{% trans "Top Books" %}</h2>
 <ul class="list-group mb-4">
     {% for book in top_books %}
@@ -29,7 +29,7 @@
 </ul>
 {% endcache %}
 
-{% cache 900 new_books_fragment %}
+{% cache 900 new_books_fragment LANGUAGE_CODE %}
 <h2>{% trans "New Books" %}</h2>
 <ul class="list-group mb-4">
     {% for book in new_books %}
@@ -53,7 +53,7 @@
 </ul>
 {% endcache %}
 
-{% cache 900 popular_books_fragment %}
+{% cache 900 popular_books_fragment LANGUAGE_CODE %}
 <h2>{% trans "Popular Books" %}</h2>
 <ul class="list-group mb-4">
     {% for book in popular_books %}
@@ -84,7 +84,7 @@
 </ul>
 {% endcache %}
 
-{% cache 900 top_authors_fragment %}
+{% cache 900 top_authors_fragment LANGUAGE_CODE %}
 <h2>{% trans "Top Authors" %}</h2>
 <ul class="list-group">
     {% for author in top_authors %}

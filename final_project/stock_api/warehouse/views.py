@@ -13,12 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 class ReservationCreateView(APIView):
-    """POST /api/reservations/ - reserve stock for a new store_api order.
-
-    All items are checked first; if any of them doesn't have enough
-    stock, nothing is reserved and a 409 with the list of problem
-    items is returned instead.
-    """
+    """reserve stock for a new store_api order"""
 
     def post(self, request):
         serializer = ReservationCreateSerializer(data=request.data)
@@ -84,9 +79,7 @@ class ReservationDetailView(APIView):
 
 
 class ReservationConfirmView(APIView):
-    """POST /api/reservations/<id>/confirm/ - payment succeeded, so the
-    reserved stock is now permanently deducted. Idempotent: confirming
-    an already-confirmed reservation just returns it unchanged."""
+    """payment succeeded"""
 
     def post(self, request, pk):
         reservation = get_object_or_404(Reservation, pk=pk)
@@ -115,8 +108,7 @@ class ReservationConfirmView(APIView):
 
 
 class ReservationCancelView(APIView):
-    """POST /api/reservations/<id>/cancel/ - payment failed/expired, so
-    the reserved stock goes back to being available. Idempotent."""
+    """payment failed/expired, so the reserved stock goes back"""
 
     def post(self, request, pk):
         reservation = get_object_or_404(Reservation, pk=pk)

@@ -1,44 +1,44 @@
 # stock_api
 
-Внутрішній сервіс складу (ProjectB). Зберігає залишки книг за їхнім `isbn` і бронює/списує їх на запит **store_api** під час оформлення замовлення. У цього сервісу немає власного інтерфейсу для покупців — тільки REST API для store_api та адмінка Django для співробітників складу.
+Internal warehouse service. Keeps track of book stock by `isbn` and reserves/deducts it on request from **store_api** when an order is placed. This service has no UI of its own for customers — only a REST API for store_api and a Django admin for warehouse staff.
 
-## Модель
+## Model
 
-- `StockItem` — `isbn`, `title`, `quantity` (скільки всього), `reserved` (скільки заброньовано). `available = quantity - reserved`.
-- `Reservation` — бронь під конкретне замовлення store_api: `order_reference`, `status` (`pending` / `confirmed` / `canceled`), `items` (список `{"isbn", "quantity"}`).
+- `StockItem` — `isbn`, `title`, `quantity` (total on hand), `reserved` (how much is reserved). `available = quantity - reserved`.
+- `Reservation` — a hold for one specific store_api order: `order_reference`, `status` (`pending` / `confirmed` / `canceled`), `items` (a list of `{"isbn", "quantity"}`).
 
-Життєвий цикл брони: **PENDING** (щойно заброньовано) → **CONFIRMED** (оплата пройшла, залишок списано назавжди) або **CANCELED** (оплата не відбулась/бронь протухла — залишок повернуто).
+Reservation lifecycle: **PENDING** (just reserved) → **CONFIRMED** (payment succeeded, stock permanently deducted) or **CANCELED** (payment failed / reservation expired — stock returned).
 
 ## API
 
-Усі ендпоінти вимагають заголовок `Authorization: Service <STOCK_API_TOKEN>` — це єдиний клієнт (store_api), тому JWT тут не потрібен.
+Every endpoint requires the header `Authorization: Service <STOCK_API_TOKEN>` — there's only one client (store_api), so JWT isn't needed here.
 
-| Метод + шлях | Що робить |
+| Method + path | What it does |
 |---|---|
-| `POST /api/reservations/` | Забронювати позиції `{order_reference, items: [{isbn, quantity}]}`. Все-або-нічого: якщо хоч одного `isbn` не вистачає — 409, нічого не бронюється. |
-| `GET /api/reservations/<id>/` | Статус брони. |
-| `POST /api/reservations/<id>/confirm/` | Підтвердити (списати остаточно). Ідемпотентно. |
-| `POST /api/reservations/<id>/cancel/` | Скасувати (повернути залишок). Ідемпотентно. |
+| `POST /api/reservations/` | Reserve items `{order_reference, items: [{isbn, quantity}]}`. All-or-nothing: if even one `isbn` is short — 409, nothing gets reserved. |
+| `GET /api/reservations/<id>/` | Reservation status. |
+| `POST /api/reservations/<id>/confirm/` | Confirm (deduct for good). Idempotent. |
+| `POST /api/reservations/<id>/cancel/` | Cancel (return the stock). Idempotent. |
 
 Swagger: `/api/docs/`.
 
-## Хто керує залишками
+## Who manages stock
 
-Кількість книг на складі (`StockItem.quantity`) правиться вручну через **`/admin/`**, групою `warehouse_staff` (створюється автоматично міграцією `0002_warehouse_staff_group`, права: `view/add/change` на `StockItem`). Окремого API для цього немає — рахунок веде тільки склад.
+The number of books on hand (`StockItem.quantity`) is edited manually via **`/admin/`**, by the `warehouse_staff` group (created automatically by migration `0002_warehouse_staff_group`, with `view/add/change` rights on `StockItem`). There's no separate API for this — only the warehouse keeps the count.
 
 ## Celery
 
-`cancel_expired_reservations` (раз на 15 хв) — скасовує брони, що висять у `PENDING` довше `RESERVATION_EXPIRY_HOURS` (типово 24 год.), і повертає залишок.
+`cancel_expired_reservations` (every 10 min) — cancels reservations stuck in `PENDING` longer than `RESERVATION_EXPIRY_HOURS` (24h by default), and returns the stock.
 
-## Запуск окремо (без store_api)
+## Running standalone (without store_api)
 
 ```bash
 docker compose up --build
 ```
 
-`web` на `http://localhost:8001/`. Дивись `.env.example` для потрібних змінних середовища (`.env_docker`/`.env_local` — свої, у git не потрапляють).
+`web` on `http://localhost:8001/`. See `.env.example` for the required environment variables (`.env_docker`/`.env_local` are your own and are gitignored).
 
-## Тести
+## Tests
 
 ```bash
 pip install -r requirements-dev.txt

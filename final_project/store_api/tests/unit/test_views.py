@@ -1,6 +1,8 @@
 from decimal import Decimal
 
 import pytest
+from django.core.cache import cache
+from django.test import override_settings
 from django.urls import reverse
 from order.models import Order, OrderDetails, PaymentMethod, PaymentStatus, OrderStatus
 from tests.factories import BookFactory, UserFactory
@@ -12,6 +14,27 @@ def test_main_page_loads(client):
     response = client.get(reverse("shop:main_page"))
 
     assert response.status_code == 200
+
+
+@pytest.mark.django_db
+@override_settings(
+    CACHES={"default": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache"}}
+)
+def test_main_page_cache_is_not_shared_across_languages(client):
+    """Regression test: the {% cache %} tags in main_page.html used to be
+    keyed without the active language, so whichever language rendered the
+    page first got cached for everyone for 15 minutes - switching the
+    language selector had no visible effect until the cache expired.
+    Tests normally run with CACHES set to DummyCache (no-op), which can't
+    catch this, hence the explicit LocMemCache override here."""
+    cache.clear()
+
+    response_en = client.get(reverse("shop:main_page"), HTTP_ACCEPT_LANGUAGE="en")
+    assert b"Top Books" in response_en.content
+
+    response_uk = client.get(reverse("shop:main_page"), HTTP_ACCEPT_LANGUAGE="uk")
+    assert "Найкращі книги".encode() in response_uk.content
+    assert b"Top Books" not in response_uk.content
 
 
 @pytest.mark.django_db

@@ -1,11 +1,8 @@
 import os
 
-from .base import *  # noqa: F401,F403
+from .base import *
 
-# Settings used in production. Secrets and host configuration are
-# required from the environment instead of falling back to insecure
-# defaults - a missing SECRET_KEY or ALLOWED_HOSTS fails loudly at
-# startup rather than silently running with a dev secret.
+# Settings used in production
 
 SECRET_KEY = os.environ["SECRET_KEY"]
 
