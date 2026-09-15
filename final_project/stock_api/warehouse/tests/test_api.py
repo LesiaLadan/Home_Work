@@ -75,7 +75,7 @@ def test_create_reservation_all_or_nothing_across_items(service_client):
 
     assert response.status_code == 409
     ok_book.refresh_from_db()
-    assert ok_book.reserved == 0 
+    assert ok_book.reserved == 0
 
 
 def test_confirm_reservation_deducts_stock_permanently(service_client):

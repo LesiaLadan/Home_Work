@@ -1,6 +1,6 @@
 import os
 
-from .base import *
+from .base import *  # noqa: F401,F403
 
 # Settings used in production
 
